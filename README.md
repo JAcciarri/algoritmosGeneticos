@@ -2,6 +2,6 @@
 Proyecto de Algoritmos Genéticos - UTN 2019
 
 Integrantes:
-Biondo Dolores
-Oliva Martin
+Biondo Dolores -
+Oliva Martin -
 Acciarri Joshua
