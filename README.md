@@ -1,3 +1,7 @@
-# algoritmosGeneticos
+# Algoritmos Geneticos
 Proyecto de Algoritmos Genéticos - UTN 2019
-simple edit
+
+Integrantes:
+Biondo Dolores
+Oliva Martin
+Acciarri Joshua
