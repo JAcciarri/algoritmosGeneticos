@@ -12,6 +12,7 @@ public class TP1 {
 	    double probMutacion=0.05;
 	    
 		int coef = -1+(int)(Math.pow(2, 30));
+		
 		int[][]poblacion = new int[pobInicial][genes];
 		int[][]poblacionAuxiliar = new int[pobInicial][genes];
 		int[]decimales =new int[pobInicial];
@@ -24,14 +25,35 @@ public class TP1 {
 		double minimo;
 		double promedio;
 		
+		double maximoFinal ;
+		int[][] mostrarAlFinal = new int[pobInicial][genes];
+		int[] decimalesFinal = new int[pobInicial];
+		double[] funcionEvaluadaFinal = new double[pobInicial];
 		////////////////////////////GENERAR POBLACION INICIAL/////////////////////////
 		
 		for (int i=0; i<pobInicial; i++) {
 			for (int j=0; j<genes; j++) {
 				poblacion[i][j]=(int)(Math.random()*2);
+				mostrarAlFinal[i][j]=poblacion[i][j];
 				}
 			}
-	
+
+/////////////////////////////////////////////////////////////////////////////////// sacar		
+		for (int k=0; k<pobInicial; k++) {
+			int suma=0;
+			for (int j=0; j<genes; j++) {
+				if (poblacion[k][j]==1) {
+					suma = suma+(int) Math.pow(2, ((genes-1)-j));
+						}
+					}
+				decimalesFinal[k]=suma;
+			}
+		maximoFinal=0;
+		for (int i=0; i<pobInicial; i++) {
+			funcionEvaluadaFinal[i] = Math.pow((double)decimalesFinal[i]/coef, 2);
+			if (funcionEvaluadaFinal[i]>maximoFinal) maximoFinal = funcionEvaluadaFinal[i];
+		}
+		
 		///////////////////////////// DEFINIR LA CANTIDAD //////////////////////////////////
 		/////////////////////////////// DE GENERACIONES ////////////////////////////////////
 		
@@ -61,8 +83,11 @@ public class TP1 {
 		////////////////////// HACER SUMA TOTAL Y CALCULAR PROMEDIO /////////////////////// 
 		
 		sumaTotal=0;
-		for (int i=0;i<pobInicial;i++) sumaTotal=sumaTotal+(funcionEvaluada[i]);
+		for (int i=0;i<pobInicial;i++) 
+			sumaTotal=sumaTotal+(funcionEvaluada[i]);
+		
 		promedio = (double)(sumaTotal/pobInicial);
+		
 		/////////////////////////// FITNESS DE CADA UNO /////////////////////////	
 		
 		for (int i=0; i<pobInicial; i++) { 
@@ -79,8 +104,8 @@ public class TP1 {
 				  		" - Fitness: "+formato.format(fitness[i]));		  
 		} 
 		System.out.println("\n\t\t\tMaximo de la generacion: "+formato.format(maximo));
-		//System.out.println("Minimo de la generacion: "+formato.format(minimo));
-		//System.out.println("Promedio de la generacion: "+formato.format(promedio));
+		System.out.println("Minimo de la generacion: "+formato.format(minimo));
+		System.out.println("Promedio de la generacion: "+formato.format(promedio));
 		
 		////////////////////////////// HACER POOL SEGUN FITNESS //////////////////////////////
 		
@@ -113,7 +138,7 @@ public class TP1 {
 		int hacerCrossover = (int)(Math.random()*101); //¿HACER O NO EL CROSSOVER?//
 		
 		if (hacerCrossover<=(int)(probCrossover*100)) {  //SI DICE QUE SI HAY QUE HACER EL CROSSOVER 
-			    int nCorte = 1+(int)(Math.random()*(genes-1)); 
+			    int nCorte = (int)(Math.random()*(genes-1)); 
 					
 				for(int j=0; j<nCorte; j++) {
 						poblacionAuxiliar[parejas][j] = poblacion[padres[parejas]][j];  //DESCENDIENTE A//
@@ -130,6 +155,7 @@ public class TP1 {
 						poblacionAuxiliar[parejas+1][k] = poblacion[padres[parejas]][k];  //DESCENDIENTE B//
 						}
 			}
+		
 
 		
 		// SI NO SE HIZO EL CROSSOVER PASO LOS PADRES COMO ESTABAN //
@@ -140,23 +166,25 @@ public class TP1 {
 			for(int j=0; j<genes; j++) {
 				poblacionAuxiliar[parejas+1][j] = poblacion[padres[parejas+1]][j];  //DESCENDIENTE B//
 				}
+	
+		}   //TERMINOEL CROSSOVER
+		
+		
+		
+		//////////////////////////////// MUTACION   //////////////////////////////
+		
+		for (int i=0; i<pobInicial; i++) {
 			
-			////////////////////////////////  MUTACION   //////////////////////////////
 			int hacerMutacion = (int)(Math.random()*101);
 			
 			if (hacerMutacion<=(int)(probMutacion*100)) {
 				int posRandom=(int)(Math.random()*(genes-1));
-				
-				if (poblacionAuxiliar[parejas][posRandom]==0) //INVERTIR BIT PADRE A//
-						poblacion[parejas][posRandom]=1;
-				   else	poblacion[parejas][posRandom]=0; 	
 
-				if (poblacionAuxiliar[parejas+1][posRandom]==0) //INVERTIR BIT PADRE B//
-						poblacion[parejas+1][posRandom]=1;
-				   else	poblacion[parejas+1][posRandom]=0; 	
+				if (poblacionAuxiliar[i][posRandom]==0) //INVERTIR BIT HIJO i//
+					poblacionAuxiliar[i][posRandom]=1;
+				else	poblacionAuxiliar[i][posRandom]=0; 
 				}
-		
-		}   //TERMINO DE LLENARSE LA POBLACION AUXILIAR
+		}
 		
 //////////////////////////////// TRASPASO AHORA SI LA NUEVA POBLACION  //////////////////////////////
 		for (int i=0; i<pobInicial; i++) {
@@ -167,7 +195,12 @@ public class TP1 {
 		
 		
 		}  //LLAVE DE CIERRE DE LAS GENERACIONES//
-		
-		
+		System.out.println("\nInicial\n");
+		for (int i=0; i<pobInicial; i++) 
+			for (int j=0; j<genes; j++) 
+				if (j==genes-1) System.out.println(mostrarAlFinal[i][j]+"   Func Ev: "+ funcionEvaluadaFinal[i]+"\n");
+				else System.out.print(mostrarAlFinal[i][j]);
+		System.out.println("\nMaximo: "+ maximoFinal);
 	}
+	
 }
