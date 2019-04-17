@@ -8,6 +8,7 @@ public class TP1 {
 		
 		int pobInicial = 10;
 		int genes = 30;
+		int cantGeneraciones = 20;
 		double probCrossover=0.75;
 	    double probMutacion=0.05;
 	    
@@ -20,6 +21,9 @@ public class TP1 {
 		double sumaTotal = 0;
 		double[] fitness = new double[pobInicial];
 		int[] pool = new int[100];
+		double []maximos= new double [cantGeneraciones];
+		double []minimos= new double [cantGeneraciones];
+		double []promedios= new double [cantGeneraciones];
 		DecimalFormat formato = new DecimalFormat("0.00000000000");
 		double maximo;
 		double minimo;
@@ -38,8 +42,8 @@ public class TP1 {
 				}
 			}
 
-/////////////////////////////////////////////////////////////////////////////////// sacar		
-		for (int k=0; k<pobInicial; k++) {
+/////////////////////////////////////////////////////////////////////////////////// sacar es de la primer generacion		
+		/*for (int k=0; k<pobInicial; k++) {
 			int suma=0;
 			for (int j=0; j<genes; j++) {
 				if (poblacion[k][j]==1) {
@@ -52,13 +56,13 @@ public class TP1 {
 		for (int i=0; i<pobInicial; i++) {
 			funcionEvaluadaFinal[i] = Math.pow((double)decimalesFinal[i]/coef, 2);
 			if (funcionEvaluadaFinal[i]>maximoFinal) maximoFinal = funcionEvaluadaFinal[i];
-		}
+		}*/
 		
 		///////////////////////////// DEFINIR LA CANTIDAD //////////////////////////////////
 		/////////////////////////////// DE GENERACIONES ////////////////////////////////////
 		
 		int generacion=0;
-		while ((generacion<20)){
+		while ((generacion<cantGeneraciones)){
 				generacion++;
 
 		////////////////////////////PASAR A NUMERO DECIMAL///////////////////////////////
@@ -80,6 +84,8 @@ public class TP1 {
 			if (funcionEvaluada[i]>maximo) maximo=funcionEvaluada[i];
 			if (funcionEvaluada[i]<minimo) minimo=funcionEvaluada[i];
 		}
+		maximos[generacion-1]=maximo; //tengo q poner -1 porque apenas entra al while incrementa la poblacion
+		minimos[generacion-1]=minimo;
 		////////////////////// HACER SUMA TOTAL Y CALCULAR PROMEDIO /////////////////////// 
 		
 		sumaTotal=0;
@@ -87,6 +93,7 @@ public class TP1 {
 			sumaTotal=sumaTotal+(funcionEvaluada[i]);
 		
 		promedio = (double)(sumaTotal/pobInicial);
+		promedios[generacion-1]= promedio;
 		
 		/////////////////////////// FITNESS DE CADA UNO /////////////////////////	
 		
@@ -96,7 +103,7 @@ public class TP1 {
 		
 		////////////////////////////// MOSTRAR //////////////////////////////
 		
-		System.out.println("\nGeneracion numero "+generacion);
+		/*System.out.println("\nGeneracion numero "+generacion);
 		 for (int i=0; i<pobInicial; i++) {
 			//System.out.print("Cromosoma "+(i+1) +"\n");
 			System.out.println(decimales[i]
@@ -106,7 +113,7 @@ public class TP1 {
 		System.out.println("\n\t\t\tMaximo de la generacion: "+formato.format(maximo));
 		System.out.println("Minimo de la generacion: "+formato.format(minimo));
 		System.out.println("Promedio de la generacion: "+formato.format(promedio));
-		
+		*/
 		////////////////////////////// HACER POOL SEGUN FITNESS //////////////////////////////
 		
 		int actualPos=0;
@@ -195,12 +202,15 @@ public class TP1 {
 		
 		
 		}  //LLAVE DE CIERRE DE LAS GENERACIONES//
-		System.out.println("\nInicial\n");
+		/*System.out.println("\nInicial\n");
 		for (int i=0; i<pobInicial; i++) 
 			for (int j=0; j<genes; j++) 
 				if (j==genes-1) System.out.println(mostrarAlFinal[i][j]+"   Func Ev: "+ funcionEvaluadaFinal[i]+"\n");
 				else System.out.print(mostrarAlFinal[i][j]);
-		System.out.println("\nMaximo: "+ maximoFinal);
+		System.out.println("\nMaximo: "+ maximoFinal);*/
+		System.out.println("Tabla Maximos:\n");
+		for(int i=0; i<cantGeneraciones; i++)
+			System.out.println(maximos[i]);
 	}
 	
 }
