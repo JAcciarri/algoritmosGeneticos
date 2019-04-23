@@ -28,36 +28,18 @@ public class TP1 {
 		double maximo;
 		double minimo;
 		double promedio;
-		
-		double maximoFinal ;
-		int[][] mostrarAlFinal = new int[pobInicial][genes];
-		int[] decimalesFinal = new int[pobInicial];
-		double[] funcionEvaluadaFinal = new double[pobInicial];
+		int cMax;
+		int cMin;
+				
 		////////////////////////////GENERAR POBLACION INICIAL/////////////////////////
 		
 		for (int i=0; i<pobInicial; i++) {
 			for (int j=0; j<genes; j++) {
 				poblacion[i][j]=(int)(Math.random()*2);
-				mostrarAlFinal[i][j]=poblacion[i][j];
+				
 				}
 			}
 
-/////////////////////////////////////////////////////////////////////////////////// sacar es de la primer generacion		
-		/*for (int k=0; k<pobInicial; k++) {
-			int suma=0;
-			for (int j=0; j<genes; j++) {
-				if (poblacion[k][j]==1) {
-					suma = suma+(int) Math.pow(2, ((genes-1)-j));
-						}
-					}
-				decimalesFinal[k]=suma;
-			}
-		maximoFinal=0;
-		for (int i=0; i<pobInicial; i++) {
-			funcionEvaluadaFinal[i] = Math.pow((double)decimalesFinal[i]/coef, 2);
-			if (funcionEvaluadaFinal[i]>maximoFinal) maximoFinal = funcionEvaluadaFinal[i];
-		}*/
-		
 		///////////////////////////// DEFINIR LA CANTIDAD //////////////////////////////////
 		/////////////////////////////// DE GENERACIONES ////////////////////////////////////
 		
@@ -79,10 +61,16 @@ public class TP1 {
 		//////////////////// EVALUAR FUNCION Y DEFINIR MAXIMO, MINIMO //////////////////////
 		maximo=0;
 		minimo=coef;
+		cMax=0;
+		cMin=0;
 		for (int i=0; i<pobInicial; i++) {
 			funcionEvaluada[i] = Math.pow((double)decimales[i]/coef, 2);
-			if (funcionEvaluada[i]>maximo) maximo=funcionEvaluada[i];
-			if (funcionEvaluada[i]<minimo) minimo=funcionEvaluada[i];
+			if (funcionEvaluada[i]>maximo) { 				
+				maximo=funcionEvaluada[i];
+				cMax = i;}
+			if (funcionEvaluada[i]<minimo) {
+				minimo=funcionEvaluada[i];
+				cMin = i;}
 		}
 		maximos[generacion-1]=maximo; //tengo q poner -1 porque apenas entra al while incrementa la poblacion
 		minimos[generacion-1]=minimo;
@@ -103,17 +91,25 @@ public class TP1 {
 		
 		////////////////////////////// MOSTRAR //////////////////////////////
 		
-		/*System.out.println("\nGeneracion numero "+generacion);
-		 for (int i=0; i<pobInicial; i++) {
-			//System.out.print("Cromosoma "+(i+1) +"\n");
+		System.out.println("\n\nGeneracion numero "+generacion);
+		/* for (int i=0; i<pobInicial; i++) {
+			//System.out.print("Cromosoma "+(i+1) +"\n");			//DEJADO PARA COMPROBAR QUE EL CROMOSOMA CORRESPONDE AL DECIMAL DEL VALOR MAXIMO
 			System.out.println(decimales[i]
 				  		+ " - Func Obj: "+formato.format(funcionEvaluada[i])+
 				  		" - Fitness: "+formato.format(fitness[i]));		  
-		} 
-		System.out.println("\n\t\t\tMaximo de la generacion: "+formato.format(maximo));
+		} */
+				
+		System.out.println("Maximo de la generacion: "+formato.format(maximo));
 		System.out.println("Minimo de la generacion: "+formato.format(minimo));
 		System.out.println("Promedio de la generacion: "+formato.format(promedio));
-		*/
+		System.out.println("Cromosoma correspondiente al valor maximo: ");
+		for (int j=0; j<genes; j++) System.out.print(poblacion[cMax][j]);
+		System.out.println("\nCromosoma correspondiente al valor minimo: ");
+		for (int j=0; j<genes; j++) System.out.print(poblacion[cMin][j]);
+		
+		
+		
+		
 		////////////////////////////// HACER POOL SEGUN FITNESS //////////////////////////////
 		
 		int actualPos=0;
@@ -145,7 +141,7 @@ public class TP1 {
 		int hacerCrossover = (int)(Math.random()*101); //¿HACER O NO EL CROSSOVER?//
 		
 		if (hacerCrossover<=(int)(probCrossover*100)) {  //SI DICE QUE SI HAY QUE HACER EL CROSSOVER 
-			    int nCorte = (int)(Math.random()*(genes-1)); 
+			    int nCorte = 1 + (int)(Math.random()*(genes-1)); //AGREGAMOS EL 1+ PARA QUE EL CROSSOVER SE REALICE DESPUES DEL GEN N°1
 					
 				for(int j=0; j<nCorte; j++) {
 						poblacionAuxiliar[parejas][j] = poblacion[padres[parejas]][j];  //DESCENDIENTE A//
@@ -174,7 +170,7 @@ public class TP1 {
 				poblacionAuxiliar[parejas+1][j] = poblacion[padres[parejas+1]][j];  //DESCENDIENTE B//
 				}
 	
-		}   //TERMINOEL CROSSOVER
+		}   //TERMINO EL CROSSOVER
 		
 		
 		
@@ -202,15 +198,16 @@ public class TP1 {
 		
 		
 		}  //LLAVE DE CIERRE DE LAS GENERACIONES//
-		/*System.out.println("\nInicial\n");
-		for (int i=0; i<pobInicial; i++) 
-			for (int j=0; j<genes; j++) 
-				if (j==genes-1) System.out.println(mostrarAlFinal[i][j]+"   Func Ev: "+ funcionEvaluadaFinal[i]+"\n");
-				else System.out.print(mostrarAlFinal[i][j]);
-		System.out.println("\nMaximo: "+ maximoFinal);*/
-		System.out.println("Tabla Maximos:\n");
+		
+		System.out.println("\n\nTabla Maximos:");
 		for(int i=0; i<cantGeneraciones; i++)
 			System.out.println(maximos[i]);
+		System.out.println("\nTabla Minimos:");
+		for(int i=0; i<cantGeneraciones; i++)
+			System.out.println(minimos[i]);
+		System.out.println("\nTabla Promedios:");
+		for(int i=0; i<cantGeneraciones; i++)
+			System.out.println(promedios[i]);
 	}
 	
 }
