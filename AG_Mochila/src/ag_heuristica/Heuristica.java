@@ -10,6 +10,7 @@ public class Heuristica {
 		ArrayList<Elemento> elementos = new ArrayList<Elemento>();
 		Mochila mochila = new Mochila();
 		mochila.setCapacidad(4200);
+		//mochila.setCapacidad (3000);
 		
 		elementos.add(new Elemento(1, 150, 20));
 		elementos.add(new Elemento(2, 325, 40));
@@ -21,6 +22,11 @@ public class Heuristica {
 		elementos.add(new Elemento(8, 60, 18));
 		elementos.add(new Elemento(9, 930, 46));
 		elementos.add(new Elemento(10, 353, 28));
+		/*
+		elementos.add(new Elemento (1, 1800, 72);
+		elementos.add(new Elemento (2, 600, 36);
+		elementos.add(new Elemento (3, 1200, 60);
+		*/
 			
 		for (Elemento e : elementos) {
 				e.setFitness((double)e.getValor()/e.getVolumen());
@@ -35,6 +41,11 @@ public class Heuristica {
 		 					" Volumen: " + e.getVolumen() +
 		 					" Precio: " + e.getValor() +
 		 					" Fitness: " + formato.format(e.getFitness()));
+		 /*
+		 System.out.println("ID: " + e.getIdElemento() +
+	 					" Peso: " + e.getVolumen() +
+	 					" Precio: " + e.getValor());
+		 */
 		}
 		
 		
@@ -47,11 +58,17 @@ public class Heuristica {
 		}
 			
 		System.out.println("\nMochila cargada con volumen ocupado: " + mochila.getVolumenOcupado());
-		System.out.println("Llenado con los elementos:");
+		//System.out.println("\nMochila cargada con peso ocupado: " + mochila.getVolumenOcupado());
+		System.out.println("Llenado con los elementos:");		
 		for(Elemento e : mochila.elementosMochila) {
 			 System.out.println("ID: " + e.getIdElemento() +
 		 					" Volumen: " + e.getVolumen() +
 		 					" Precio: " + e.getValor());
+			 /*
+			 System.out.println("ID: " + e.getIdElemento() +
+		 					" Peso: " + e.getVolumen() +
+		 					" Precio: " + e.getValor());
+			 */
 			}
 	
 	}
