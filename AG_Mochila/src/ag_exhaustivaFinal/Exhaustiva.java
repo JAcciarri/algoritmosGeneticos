@@ -1,0 +1,88 @@
+package ag_exhaustiva;
+
+
+public class Exhaustiva {
+	 
+	static Elemento[] elementos = inicializarElementos();
+	
+    public static void main(String[] args) {
+       
+         Mochila mochilaBase = new Mochila(4200, elementos.length);
+         Mochila mochilaOptima = new Mochila(4200, elementos.length);
+        llenarMochila(mochilaBase, elementos, false, mochilaOptima); // funcion recursiva
+        
+        mostrarResultados(mochilaOptima);
+        
+    }
+    
+   
+    public static Elemento[] inicializarElementos() {
+    	Elemento[] elems = {
+    		new Elemento(150, 20),
+    		new Elemento(325, 40),
+    		new Elemento(600, 50),
+    		new Elemento(805, 36),
+	    	new Elemento(430, 25),
+	    	new Elemento(1200, 64),
+	    	new Elemento(770, 54),
+	    	new Elemento(60, 18),
+    		new Elemento(930, 46),
+    		new Elemento(353, 28) };
+    	return elems;
+    }
+
+    //funcion recursiva
+    public static void llenarMochila(Mochila m_base, Elemento[] elementos, boolean llena, Mochila m_opt) {
+
+      
+        if (llena) {
+            //si esta llena verifico si tiene mas beneficio que la optima
+            if (m_base.getBeneficio() >= m_opt.getBeneficio()) {
+            	 //si tiene mas beneficio debo vaciar la optima y traspasarla	
+                Elemento[] elementosMochBase = m_base.getElementos();
+                m_opt.vaciarMochila();
+                //metemos los elementos
+                for (Elemento e : elementosMochBase) {
+                    if (e != null) {
+                        m_opt.agregarElemento(e);
+                    }
+                }
+
+            }
+
+        } else {
+            //Y si no esta llena entonces recorre los indices de los elementos
+            for (int i = 0; i < elementos.length; i++) {
+                
+                if (m_base.existeElemento(elementos[i]) == false ) //si no existe este elemento entonces...
+                {
+                    //Si ademas el peso de la mochila se supera, indicamos que esta llena
+                    if (m_base.getCapacidadMaxima() > m_base.getCapacidadOcupada() + elementos[i].getVolumen()) {
+                       //pero si tengo lugar lo agrego
+                    	m_base.agregarElemento(elementos[i]); //agregamos el elemento
+                        llenarMochila(m_base, elementos, false, m_opt); //llamamos a la recursividad
+                        m_base.eliminarElemento(elementos[i]); // luego lo eliminamos
+                    } 
+                    
+                    else { //esto sucede si es que se supera el peso
+                        llenarMochila(m_base, elementos, true, m_opt);
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+    
+    
+    public static void mostrarResultados(Mochila mochilaOptima) {
+    System.out.println("Mochila optima: ");
+    for (int i=0; i<elementos.length; i++) {
+    	System.out.println("Elemento con volumen: "+elementos[i].getVolumen()+" - Beneficio: "+elementos[i].getBeneficio());
+    }
+    System.out.println("Capacidad total ocupada: "+ mochilaOptima.getCapacidadOcupada());
+    System.out.println("Beneficio total: "+ mochilaOptima.getBeneficio());
+    }
+}
