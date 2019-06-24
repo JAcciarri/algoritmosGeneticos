@@ -79,8 +79,13 @@ public class Exhaustiva {
     
     public static void mostrarResultados(Mochila mochilaOptima) {
     System.out.println("Mochila optima: ");
-    for (int i=0; i<elementos.length; i++) {
-    	System.out.println("Elemento con volumen: "+elementos[i].getVolumen()+" - Beneficio: "+elementos[i].getBeneficio());
+    Elemento[] elementosMochila = mochilaOptima.getElementos();
+    for (int i=0; i<elementosMochila.length; i++) {
+    	if (elementosMochila[i]!= null) {
+    			    System.out.println("Elemento con volumen: "+
+    				elementosMochila[i].getVolumen()+
+    				" - Beneficio: "+elementosMochila[i].getBeneficio());
+    	}
     }
     System.out.println("Capacidad total ocupada: "+ mochilaOptima.getCapacidadOcupada());
     System.out.println("Beneficio total: "+ mochilaOptima.getBeneficio());
