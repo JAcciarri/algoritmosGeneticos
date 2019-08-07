@@ -5,10 +5,10 @@ public class Celda {
 	private String ciudadHasta;
 	private int distanciaEntreAmbas;
 	
-	public Celda(String cDesde, String cHasta, int distancia) {
+	public Celda(String cDesde, String cHasta) {
 		this.ciudadDesde = cDesde;
 		this.ciudadHasta = cHasta;
-		this.distanciaEntreAmbas = distancia;
+		
 	}
 	
 	public String getCiudadDesde() {
