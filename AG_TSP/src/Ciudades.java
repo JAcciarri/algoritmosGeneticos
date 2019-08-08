@@ -2,34 +2,34 @@
 public class Ciudades {
 	
 	private static int c;
-	private static Celda[][] matriz = new Celda[23][23];
+	private static Celda[][] matriz;
 	private static String[] ciudades = {
-	("Cdad de Buenos Aires"),
-	("Cordoba"),
-	("Corrientes"),
-	("Formosa"),
-	("La Plata"),
-	("La Rioja"),
-	("Mendoza"),
-	("Neuquen"),
-	("Parana"),
-	("Posadas"),
-	("Rawson"),
-	("Resistencia"),
-	("Rio Gallegos"),
-	("S.F.d.V.d. Catamarca"),
-	("S.M. de Tucuman"),
-	("S.S. de Jujuy"),
-	("Salta"),
-	("San Juan"),
-	("San Luis"),
-	("Santa Fe"),
-	("Santa Rosa"),
-	("Sgo. Del Estero"),
-	("Ushuaia"),
-	("Viedma")};
-	
-	private static int []distancias = new int[] {
+			("Cdad de Buenos Aires"),
+			("Cordoba"),
+			("Corrientes"),
+			("Formosa"),
+			("La Plata"),
+			("La Rioja"),
+			("Mendoza"),
+			("Neuquen"),
+			("Parana"),
+			("Posadas"),
+			("Rawson"),
+			("Resistencia"),
+			("Rio Gallegos"),
+			("S.F.d.V.d. Catamarca"),
+			("S.M. de Tucuman"),
+			("S.S. de Jujuy"),
+			("Salta"),
+			("San Juan"),
+			("San Luis"),
+			("Santa Fe"),
+			("Santa Rosa"),
+			("Sgo. Del Estero"),
+			("Ushuaia"),
+			("Viedma")};
+			
+	private static int [] distancias = new int[] {
 			0,	646,    792,    933,	53,		986,	985,	989,	375,	834,	1127,	794,	2082,	979,	1080,	1334,	1282,	1005,	749,	393,	579,	939,	2373,	799,
 			0,	677,	824,	698,	340,	466,	907,	348,	919,	1321,	669,	2281,	362,	517,	809,	745,	412,	293,	330,	577,	401,	2618,	1047,	
 			0,	157,	830,	814,	1131,	1534,	500,	291,	1845,	13,		2819,	691,	633,	742,	719,	1039,	969,	498,	1136,	535,	3131,	1527,
@@ -61,29 +61,6 @@ public class Ciudades {
 	public static void main(String args[]) {
 
 
-		//Todas contra todas (Solo nombres)
-		
-		for (int i = 0; i < 23; i++) {
-			for (int j = 0; j < 23; j++) {
-				
-				matriz[i][j] = new Celda(ciudades[i], ciudades[j]);
-			}
-		}
-		
-		
-		int k=0;
-		int l=0;
-		for( int i = 0; i<matriz.length; i++) {
-			for (int j= k; j<matriz.length; k++) {
-				int dist= distancias [l];
-				matriz[i][j].setDistanciaEntreAmbas(dist);		
-				matriz[j][i].setDistanciaEntreAmbas(dist);
-				l++;
-				
-				//c++;
-			}
-			k++;
-		}
 		
 		/*//Distancias diagonales (=0)
 		for (int k=0; k<24; k++) {
@@ -165,9 +142,35 @@ public class Ciudades {
 		matriz[0][23].setDistanciaEntreAmbas(799); matriz[23][0].setDistanciaEntreAmbas(799);*/
 	}
 
+	public static void crearMatriz() {
+	 matriz = new Celda[24][24];
+	 
+		for (int i = 0; i < 24; i++) {
+			for (int j = 0; j < 24; j++) {
+				
+				matriz[i][j] = new Celda(ciudades[i], ciudades[j]);
+			}
+		}
+		
+		int k=0;
+		int l=0;
+		for( int i = 0; i<ciudades.length; i++) {
+			for (int j = k; j<ciudades.length; j++) {
+				int dist = distancias [l];
+				matriz[i][j].setDistanciaEntreAmbas(dist);		
+				matriz[j][i].setDistanciaEntreAmbas(dist);
+				l++;
+				
+				//c++;
+			}
+			k++;
+		}
+	}
+	
 	public static Celda[][] getMatriz(){
 		return matriz;
 	}
+	
 	
 	public static String[] getCiudades() {
 		return ciudades;
