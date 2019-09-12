@@ -23,5 +23,16 @@
 #mapa{
 	position:relative;
     float:right;
-    margin-right: 50%;
+    margin-right: 30%;
+}
+
+.central-text h2{
+	position: absolute;
+	float: center;
+}
+
+.selectCiudad{
+	width: 300px;
+	height: 100px;
+	background-color:red;
 }

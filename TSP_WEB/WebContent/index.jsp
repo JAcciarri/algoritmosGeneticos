@@ -12,8 +12,11 @@
 
 <%  String[] ciudades = Ciudades.getCiudades(); %>
 
+	<h2>Algoritmos Genéticos - TSP Problema del viajante</h2>
+	<h3>Grupo n° 4: Acciarri Joshua - Biondo Dolores - Oliva Martin</h3>
+	
 	<form action="CiudadServlet" method="POST">
-		<label>Ciudad de origen: </label> 
+		<label>Elegir ciudad de origen: </label> 
 			<select name="destino">
 				<% for (int i = 0; i<ciudades.length; i++) {%>
 						<option><%=ciudades[i]%></option>
@@ -22,8 +25,8 @@
 			<button type="submit" class="button-default">Iniciar Busqueda</button>
 		<div>
 			<br> 
-			<label>¿Mejor recorrido?  </label>
-			<a href="CiudadServlet" class="button-default">Show</a>	
+			<label> Encontrar recorrido minimo  </label>
+			<a href="CiudadServlet" class="button-default">Iniciar</a>	
 		</div>
 	</form>
 
@@ -49,18 +52,25 @@
 	
 	
 	<table class="table">
+		
 		<tr>
+			<th> # </th>
 			<th>Recorrido</th>
 		</tr>
 		<tr>
 			<%
 		   		for (int i=0; i<recorrido.length; i++){
 		   		%>
+		   	<td><%=i %></td>
 			<td><%=recorrido[i] %></td>
 			</tr>
-
 			<% }%>
-		
+			
+			<tr>
+			<td>24</td>
+			<td><%=recorrido[0]+" (Vuelta al inicio)" %></td>
+			
+			</tr>
 	</table>
 
 	<% }
