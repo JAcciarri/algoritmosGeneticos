@@ -5,7 +5,7 @@ import ag.Ciudades;
 
 public class Principal {
 
-	static int longPoblacion = 4;
+	static int longPoblacion = 50;
 	static int longCromosoma = 24;
 	static int[] distancias = new int[longCromosoma];
 	static ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
@@ -17,14 +17,14 @@ public class Principal {
 		
 		for (int i= 0;  i < longPoblacion; i++) {
 			int localDistancia = 0;
-			for (int j = 0; j < longCromosoma; j++) {
+			for (int j = 0; j < 23; j++) {
 				
 				//getDistanciaBetween es un metodo estatico de Ciudades que devuelve la distancia dadas
 				// dos ciudades como parametros, estas se obtienen de la poblacion inicial.
 				
 				 localDistancia = localDistancia + Ciudades.getDistanciaBetween(
-								poblacion.get(i).getCiudadesCromosoma().get(i), 
-								poblacion.get(i).getCiudadesCromosoma().get(j));
+								poblacion.get(i).getCiudadesCromosoma().get(j), 
+								poblacion.get(i).getCiudadesCromosoma().get(j+1));
 			}
 			poblacion.get(i).setDistTotal(localDistancia);
 		}

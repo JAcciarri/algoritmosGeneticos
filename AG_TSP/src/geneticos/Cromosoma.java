@@ -9,6 +9,7 @@ public class Cromosoma {
 	private ArrayList<Integer> ciudadesCromosoma;
 	int distTotal;
 	double fitness;
+
 	
 	public Cromosoma() {
 		this.ciudadesCromosoma = new ArrayList<Integer>(24);
