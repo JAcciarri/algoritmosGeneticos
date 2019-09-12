@@ -7,7 +7,8 @@ import java.util.Random;
 public class Cromosoma {
 	
 	private ArrayList<Integer> ciudadesCromosoma;
-	
+	int distTotal;
+	double fitness;
 	
 	public Cromosoma() {
 		this.ciudadesCromosoma = new ArrayList<Integer>(24);
@@ -40,6 +41,22 @@ public class Cromosoma {
 			cromosoma = cromosoma + (i) + " ";
 		}
 		return cromosoma;
+	}
+
+	public int getDistTotal() {
+		return distTotal;
+	}
+
+	public void setDistTotal(int distTotal) {
+		this.distTotal = distTotal;
+	}
+
+	public double getFitness() {
+		return fitness;
+	}
+
+	public void setFitness(double fitness) {
+		this.fitness = fitness;
 	}
 	
 	}
