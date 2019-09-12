@@ -1,0 +1,27 @@
+.table td{
+	border: black solid 1px;
+	padding: 5px;
+}
+.table th{
+	border: black solid 1px;
+	padding: 10px;
+}
+
+.button-default{
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 8px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  cursor:pointer;
+  border-radius:20px;
+}
+
+#mapa{
+	position:relative;
+    float:right;
+    margin-right: 50%;
+}
