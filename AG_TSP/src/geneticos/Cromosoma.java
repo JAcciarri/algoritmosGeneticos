@@ -27,12 +27,33 @@ public class Cromosoma {
 	
 		Random random = new Random();
 		int numRandom;
-		for (int i = 0; i< 24; i++) {
+		for (int i = 0; i< 24; i++) { //ciudades cromosoma son los numeros de los genes que representan las ciudades
 			do {
 				numRandom = random.nextInt(24);
 			} while(this.ciudadesCromosoma.contains(numRandom));
 			this.ciudadesCromosoma.add(numRandom);
 		}
+	}
+	
+	//agregue agregarCiudad, yaExiste, buscarGen, genVacio
+	public void agregarCiudad(int i, int j, Cromosoma padre) {//recibo las 2 posiciones, el cromosoma del padre y agrego a this en la primer
+		int k = padre.ciudadesCromosoma.get(j); //posicion al gen del padre en la 2da posicion
+		this.ciudadesCromosoma.add(i, k);
+	}
+	
+	public boolean yaExiste (int j, Cromosoma padre2) {
+		int k=padre2.ciudadesCromosoma.get(j);
+		return (this.ciudadesCromosoma.contains(k));
+	}
+	
+	public int buscarGen (int i, Cromosoma padre2) {
+		int k=padre2.ciudadesCromosoma.get(i);
+		return k;
+	}
+	
+	public boolean genVacio (int i) {
+		Integer gen = this.ciudadesCromosoma.get(i);
+		return (gen == 0);
 	}
 	
 	@Override 
@@ -60,5 +81,3 @@ public class Cromosoma {
 		this.fitness = fitness;
 	}
 	
-	}
-
