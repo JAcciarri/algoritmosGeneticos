@@ -16,6 +16,8 @@ public class Principal {
 	static int padres[] = new int[longPoblacion];
 	static Cromosoma padre2=new Cromosoma();
 	static Cromosoma padre1=new Cromosoma();
+	static Cromosoma hijo1=new Cromosoma();
+	static Cromosoma hijo2=new Cromosoma();
 	
 	
 	public static void main(String[] args) {
@@ -78,7 +80,6 @@ public class Principal {
 		}
 	}
 	
-	//JOSHUA HICE DE ACA PARA ABAJO
 	static void generarPool(){
 		int actualPos=0;
 		for (int i=0; i<longPoblacion; i++) {
@@ -100,45 +101,66 @@ public class Principal {
 		}
 	}
 	
-	static void crossoverCiclico() { //est[a llenando solo el hijo 1 siguiendo el ciclo, falta hijo2 
-		for (int parejas=0; parejas<longPoblacion; parejas+=2) {
-			
+	static void crossoverCiclico() {
+		for (int parejas=0; parejas<longPoblacion; parejas+=2) {			
 			int hacerCrossover = (int)(Math.random()*101); //¿HACER O NO EL CROSSOVER?//
+			padre1 = poblacion.get(padres[parejas]);
+			padre2 = poblacion.get(padres[parejas+1]);
 			if (hacerCrossover<=(int)(probCrossover*100)) {
-				int posN = 0;
-				int pos=0; 
-				//primero guardo en el primer gen del hijo1 el primer gen del padre 1
-				poblacionAuxiliar.add(new Cromosoma());//hijo 1 en posicion:parejas
-				padre1 = poblacion.get(padres[parejas]);
-				padre2 = poblacion.get(padres[parejas+1]);
-				poblacionAuxiliar.get(parejas).agregarCiudad(posN, pos, padre1); //mando las 2 posiciones y el cromosoma del padre
-				//segundo hago ciclico el resto de las posiciones
-				//arranca en 1 porque la pos0 ya la llene
-				for (int i=1; i<longCromosoma; i++) {					
-					if(poblacionAuxiliar.get(parejas).yaExiste(posN, padre2)) {
+				int pos1=0; 
+				int pos2=0; 
+				poblacionAuxiliar.add(parejas, new Cromosoma());
+				poblacionAuxiliar.add(parejas+1, new Cromosoma()); 				
+				hijo1=poblacionAuxiliar.get(parejas);
+				hijo2=poblacionAuxiliar.get(parejas+1);
+				hijo1.agregarCiudad(pos1, padre1);
+				hijo2.agregarCiudad(pos2, padre2);
+				pos1=padre1.buscarGen(pos1, padre2);//esta la uso para el hijo 1
+				pos2=padre1.buscarGen(pos2, padre2);//esta la uso para el hijo 2
+				//segundo hago ciclico el resto de las posiciones - HIJO 1
+				//arranca en 1 porque la pos en 0 ya la llene
+				for (int i=1; i<longCromosoma-1; i++) {					
+					if(hijo1.yaExiste(pos1, padre2)) {
 						break; //se termina el crossover, no se si esta bien este break pero si esto es true se tiene que terminar
 						}else{
-							pos=posN;
-							posN=padre1.buscarGen(pos, padre2);
-							poblacionAuxiliar.get(parejas).agregarCiudad(posN, pos, padre2);
-							
+							hijo1.agregarCiudad(pos1, padre1); 
+							pos1=padre1.buscarGen(pos1, padre2);							
 						}
 					}
 				//cuando sale por el break o porque ya completo todos, rellena el resto de los genes que quedaron vacios
 				for (int i=0;i<longCromosoma;i++) {
-					if (poblacionAuxiliar.get(parejas).genVacio(i)) {
-						poblacionAuxiliar.get(parejas).agregarCiudad(i, i, padre2);
+					if (hijo1.genVacio(i)) {
+						hijo1.agregarCiudad(i, padre2);
 					}
 				}
 				
+				//HIJO 2
+				for (int i=1; i<longCromosoma-1; i++) {					
+					if(hijo2.yaExiste(pos2, padre1)) {
+						break; //se termina el crossover, no se si esta bien este break pero si esto es true se tiene que terminar
+						}else{							
+							hijo2.agregarCiudad(pos2, padre2); 
+							pos2=padre2.buscarGen(pos2, padre1);							
+						}
+					}
+				//cuando sale por el break o porque ya completo todos, rellena el resto de los genes que quedaron vacios
+				for (int i=0;i<longCromosoma;i++) {
+					if (hijo2.genVacio(i)) {
+						hijo2.agregarCiudad(i, padre1);
+					}
+				}
 			
-			
-				}else {//paso los padres como estaban
+				}else { //copio los padres tal cual
+					poblacionAuxiliar.add(padre1);
+					poblacionAuxiliar.add(padre2);
+					
 					
 				}
 			}
 				
 	}
 	
+	//mutacion
+	//traspasar poblacion
 	
 }
