@@ -35,9 +35,8 @@ public class Cromosoma {
 		}
 	}
 	
-	//agregue agregarCiudad, yaExiste, buscarGen, genVacio
-	public void agregarCiudad(int i, int j, Cromosoma padre) {//recibo las 2 posiciones, el cromosoma del padre y agrego a this en la primer
-		int k = padre.ciudadesCromosoma.get(j); //posicion al gen del padre en la 2da posicion
+	public void agregarCiudad(int i, Cromosoma padre) {
+		int k = padre.ciudadesCromosoma.get(i); 
 		this.ciudadesCromosoma.add(i, k);
 	}
 	
@@ -46,13 +45,21 @@ public class Cromosoma {
 		return (this.ciudadesCromosoma.contains(k));
 	}
 	
-	public int buscarGen (int i, Cromosoma padre2) {
-		int k=padre2.ciudadesCromosoma.get(i);
-		return k;
+	public int buscarGen(int i, Cromosoma padre2){
+		int posNueva=0;
+		int k=padre2.ciudadesCromosoma.get(i);//guardo el numero que hay en padre 2 en pos
+	    for (int j = 0; j < padre2.ciudadesCromosoma.size(); j++) {//busco la posicion en la cual esta k en padre 1
+	        if (this.ciudadesCromosoma.get(j).equals(k)) {
+	            posNueva=j;
+	            break;
+	        }
+	    }
+	    return posNueva;
 	}
+
 	
 	public boolean genVacio (int i) {
-		Integer gen = this.ciudadesCromosoma.get(i);
+		int gen = this.ciudadesCromosoma.get(i);
 		return (gen == 0);
 	}
 	
@@ -81,3 +88,4 @@ public class Cromosoma {
 		this.fitness = fitness;
 	}
 	
+	}
