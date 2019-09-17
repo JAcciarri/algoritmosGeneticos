@@ -5,10 +5,11 @@ import java.util.ArrayList;
 
 public class Principal {
 
-	static int longPoblacion = 50;
-	static int longCromosoma = 24;
+	static int longPoblacion = 10;
+	static int longCromosoma = 24;//24
 	static double probCrossover=0.75;
 	static double probMutacion=0.05;
+	static int cantGeneraciones = 5;
 	static int[] pool = new int[100];
 	static int[] distancias = new int[longCromosoma];
 	static ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
@@ -18,6 +19,7 @@ public class Principal {
 	static Cromosoma padre1=new Cromosoma();
 	static Cromosoma hijo1=new Cromosoma();
 	static Cromosoma hijo2=new Cromosoma();
+	static int generacion=0;
 	
 	
 	public static void main(String[] args) {
@@ -25,9 +27,13 @@ public class Principal {
 		crearPoblacionInicial();
 		Ciudades.crearMatriz();
 		
-		for (int i= 0;  i < longPoblacion; i++) {
+		//while((generacion<cantGeneraciones)){
+		//	generacion++;
+			
+			//seteo disttotal
+			for (int i= 0;  i < longPoblacion; i++) {
 			int localDistancia = 0;
-			for (int j = 0; j < 23; j++) {
+			for (int j = 0; j < (longCromosoma-1); j++) {
 				
 				//getDistanciaBetween es un metodo estatico de Ciudades que devuelve la distancia dadas
 				// dos ciudades como parametros, estas se obtienen de la poblacion inicial.
@@ -40,21 +46,15 @@ public class Principal {
 		}
 		
 		evaluarFitness();
-		
-		//imprimir poblacion inicial
-		for (Cromosoma cr : poblacion) {
-			int index = poblacion.indexOf(cr);
-			System.out.println("Cromosoma " + index + ": " + cr.toString() +
-							   "- Distancia: "+ cr.getDistTotal()+ 
-							   "- Fitness: " + cr.getFitness());
-		}
-		
+		mostrar(poblacion);
 		generarPool();
 		determinarPadres();
 		crossoverCiclico();
-	
-		
+		hacerMutacion();
+		generarNuevaPoblacion();
+		mostrar(poblacion);
 	}
+	//}
 	
 	static void evaluarFitness() {
 		int summ = 0;
@@ -104,30 +104,35 @@ public class Principal {
 	static void crossoverCiclico() {
 		for (int parejas=0; parejas<longPoblacion; parejas+=2) {			
 			int hacerCrossover = (int)(Math.random()*101); //¿HACER O NO EL CROSSOVER?//
-			padre1 = poblacion.get(padres[parejas]);
-			padre2 = poblacion.get(padres[parejas+1]);
+			int index1=parejas;
+			int index2=(parejas+1);
+			//System.out.println("Index 1: " + index1);
+			//System.out.println("Index 2: " + index2);
+			padre1 = poblacion.get(padres[index1]);
+			padre2 = poblacion.get(padres[index2]);
+			//System.out.println("Padre " + index1 + ": " + padre1.toString()  );
+			//System.out.println("Padre " + index2 + ": " + padre2.toString()  );
 			if (hacerCrossover<=(int)(probCrossover*100)) {
+				//System.out.println("C");
 				int pos1=0; 
 				int pos2=0; 
-				poblacionAuxiliar.add(parejas, new Cromosoma());
-				poblacionAuxiliar.add(parejas+1, new Cromosoma()); 				
-				hijo1=poblacionAuxiliar.get(parejas);
-				hijo2=poblacionAuxiliar.get(parejas+1);
+				poblacionAuxiliar.add(index1, new Cromosoma()); //agrego hijo 1
+				poblacionAuxiliar.add(index2, new Cromosoma()); 	// agrego hijo 2
+				hijo1=poblacionAuxiliar.get(index1);
+				hijo2=poblacionAuxiliar.get(index2);
+				hijo1.llenarHijos(); //tengo que llenarlos para poder referenciar a las posiciones 
+				hijo2.llenarHijos();
 				hijo1.agregarCiudad(pos1, padre1);
 				hijo2.agregarCiudad(pos2, padre2);
-				pos1=padre1.buscarGen(pos1, padre2);//esta la uso para el hijo 1
-				pos2=padre1.buscarGen(pos2, padre2);//esta la uso para el hijo 2
-				//segundo hago ciclico el resto de las posiciones - HIJO 1
-				//arranca en 1 porque la pos en 0 ya la llene
-				for (int i=1; i<longCromosoma-1; i++) {					
-					if(hijo1.yaExiste(pos1, padre2)) {
-						break; //se termina el crossover, no se si esta bien este break pero si esto es true se tiene que terminar
-						}else{
-							hijo1.agregarCiudad(pos1, padre1); 
-							pos1=padre1.buscarGen(pos1, padre2);							
+				//HIJO 1	
+				pos1=padre1.buscarGen(pos1, padre2);				
+				for (int i=1; i<longCromosoma; i++) {							//VER DE PONER UN BREAK PARA QUE NO SIGA DANDO VUELTAS EN EL FOR					
+					if(hijo1.noExiste(pos1, padre1)) {
+						hijo1.agregarCiudad(pos1, padre1);
+						pos1=padre1.buscarGen(pos1, padre2);
 						}
 					}
-				//cuando sale por el break o porque ya completo todos, rellena el resto de los genes que quedaron vacios
+				//cuando sale rellena el resto de los genes que quedaron vacios
 				for (int i=0;i<longCromosoma;i++) {
 					if (hijo1.genVacio(i)) {
 						hijo1.agregarCiudad(i, padre2);
@@ -135,15 +140,14 @@ public class Principal {
 				}
 				
 				//HIJO 2
-				for (int i=1; i<longCromosoma-1; i++) {					
-					if(hijo2.yaExiste(pos2, padre1)) {
-						break; //se termina el crossover, no se si esta bien este break pero si esto es true se tiene que terminar
-						}else{							
-							hijo2.agregarCiudad(pos2, padre2); 
-							pos2=padre2.buscarGen(pos2, padre1);							
+				pos2=padre2.buscarGen(pos2, padre1);
+				for (int i=1; i<longCromosoma; i++) {					
+					if(hijo2.noExiste(pos2, padre2)) {
+							hijo2.agregarCiudad(pos2, padre2); 	
+							pos2=padre2.buscarGen(pos2, padre1);
 						}
 					}
-				//cuando sale por el break o porque ya completo todos, rellena el resto de los genes que quedaron vacios
+				//cuando sale rellena el resto de los genes que quedaron vacios
 				for (int i=0;i<longCromosoma;i++) {
 					if (hijo2.genVacio(i)) {
 						hijo2.agregarCiudad(i, padre1);
@@ -152,15 +156,43 @@ public class Principal {
 			
 				}else { //copio los padres tal cual
 					poblacionAuxiliar.add(padre1);
-					poblacionAuxiliar.add(padre2);
-					
-					
-				}
-			}
-				
+					poblacionAuxiliar.add(padre2);	
+				}	
+				//System.out.println("Hijo " + index1 + ": " + poblacionAuxiliar.get(index1).toString()   );
+				//System.out.println("Hijo " + index2 + ": " + poblacionAuxiliar.get(index2).toString()   );
+			
+		}
 	}
 	
-	//mutacion
-	//traspasar poblacion
 	
+	public static void hacerMutacion(){
+		
+		for (int i=0; i<longPoblacion; i++) {
+			int hacerMutacion = (int)(Math.random()*101);			
+			if (hacerMutacion<=(int)(probMutacion*100)) {
+				int posRandom1=(int)(Math.random()*(longCromosoma-1));
+				int posRandom2=(int)(Math.random()*(longCromosoma-1));
+				poblacionAuxiliar.get(i).mutar(posRandom1, posRandom2);
+				//System.out.println("Hijo " + i + " mutado en: " + posRandom1 + " y " + posRandom2 + ": " + poblacionAuxiliar.get(i).toString() );
+			}	
+		}
+	}
+	//traspasar poblacion
+	public static void generarNuevaPoblacion(){
+		Cromosoma var=new Cromosoma();
+		for (int i=0; i<longPoblacion; i++) {		
+				var = poblacionAuxiliar.get(i);
+				poblacion.set(i, var);
+			
+		}
+	}
+	
+	public static void mostrar(ArrayList<Cromosoma> pob) {
+				for (Cromosoma cr : pob) {
+					int index = pob.indexOf(cr);
+					System.out.println("Cromosoma " + index + ": " + cr.toString() +
+									   "- Distancia: "+ cr.getDistTotal()+ 
+									   "- Fitness: " + cr.getFitness());
+				}
+	}
 }
