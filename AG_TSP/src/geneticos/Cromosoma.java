@@ -12,7 +12,7 @@ public class Cromosoma {
 
 	
 	public Cromosoma() {
-		this.ciudadesCromosoma = new ArrayList<Integer>(24);
+		this.ciudadesCromosoma = new ArrayList<Integer>(24);//24
 	}
 	
 	public ArrayList<Integer> getCiudadesCromosoma() {
@@ -27,28 +27,35 @@ public class Cromosoma {
 	
 		Random random = new Random();
 		int numRandom;
-		for (int i = 0; i< 24; i++) { //ciudades cromosoma son los numeros de los genes que representan las ciudades
+		for (int i = 0; i< 24; i++) { //ciudades cromosoma son los numeros de los genes que representan las ciudades//24
 			do {
-				numRandom = random.nextInt(24);
+				numRandom = random.nextInt(24);//24
 			} while(this.ciudadesCromosoma.contains(numRandom));
 			this.ciudadesCromosoma.add(numRandom);
 		}
 	}
 	
+	public void llenarHijos() { // lleno todos los hijos con el numero 24 el cual no pertenece a ningun indice, ya que si no no puedo diferenciar las posiciones en arraylist vacio
+		for (int i = 0; i< 24; i++) { //24
+			this.ciudadesCromosoma.add(24);
+		}
+		
+	}
+	
 	public void agregarCiudad(int i, Cromosoma padre) {
 		int k = padre.ciudadesCromosoma.get(i); 
-		this.ciudadesCromosoma.add(i, k);
+		this.ciudadesCromosoma.set(i, k);
 	}
 	
-	public boolean yaExiste (int j, Cromosoma padre2) {
-		int k=padre2.ciudadesCromosoma.get(j);
-		return (this.ciudadesCromosoma.contains(k));
+	public boolean noExiste (int j, Cromosoma padre) {
+		int k=padre.ciudadesCromosoma.get(j);
+		return !(this.ciudadesCromosoma.contains(k));
 	}
 	
-	public int buscarGen(int i, Cromosoma padre2){
+	public int buscarGen(int i, Cromosoma padre){
 		int posNueva=0;
-		int k=padre2.ciudadesCromosoma.get(i);//guardo el numero que hay en padre 2 en pos
-	    for (int j = 0; j < padre2.ciudadesCromosoma.size(); j++) {//busco la posicion en la cual esta k en padre 1
+		int k=padre.ciudadesCromosoma.get(i);//guardo el numero que hay en padre 2 en pos
+	    for (int j = 0; j < padre.ciudadesCromosoma.size(); j++) {//busco la posicion en la cual esta k en padre 1
 	        if (this.ciudadesCromosoma.get(j).equals(k)) {
 	            posNueva=j;
 	            break;
@@ -60,8 +67,16 @@ public class Cromosoma {
 	
 	public boolean genVacio (int i) {
 		int gen = this.ciudadesCromosoma.get(i);
-		return (gen == 0);
+		return (gen == 24);
 	}
+	
+	public void mutar (int i, int j) {
+		int k = this.ciudadesCromosoma.get(i);
+		int l = this.ciudadesCromosoma.get(j);
+		this.ciudadesCromosoma.set(j, k);
+		this.ciudadesCromosoma.set(i, l);
+	}
+	
 	
 	@Override 
 	public String toString(){
