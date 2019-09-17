@@ -9,6 +9,7 @@ public class Cromosoma {
 	private ArrayList<Integer> ciudadesCromosoma;
 	int distTotal;
 	double fitness;
+	double funcion; //funcion objetivo
 
 	
 	public Cromosoma() {
@@ -77,6 +78,11 @@ public class Cromosoma {
 		this.ciudadesCromosoma.set(i, l);
 	}
 	
+	public static void mostrarCiudades() {
+		
+		
+		}
+	
 	
 	@Override 
 	public String toString(){
@@ -98,9 +104,17 @@ public class Cromosoma {
 	public double getFitness() {
 		return fitness;
 	}
+	
+	public double getFuncion() {
+		return funcion;
+	}
 
 	public void setFitness(double fitness) {
 		this.fitness = fitness;
+	}
+	
+	public void setFuncion(double funcion) {
+		this.funcion = funcion;
 	}
 	
 	}
