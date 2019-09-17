@@ -9,7 +9,7 @@ public class Principal {
 	static int longCromosoma = 24;//24
 	static double probCrossover=0.75;
 	static double probMutacion=0.05;
-	static int cantGeneraciones = 5;
+	static int cantGeneraciones = 30;
 	static int[] pool = new int[100];
 	static int[] distancias = new int[longCromosoma];
 	static ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
@@ -26,35 +26,41 @@ public class Principal {
 		
 		crearPoblacionInicial();
 		Ciudades.crearMatriz();
+		System.out.println("\nPoblacion Inicial - Generacion: " + generacion + "\n");
+		mostrar(poblacion);
 		
-		//while((generacion<cantGeneraciones)){
-		//	generacion++;
+		while((generacion<cantGeneraciones)){
+			generacion++;
 			
-			//seteo disttotal
-			for (int i= 0;  i < longPoblacion; i++) {
-			int localDistancia = 0;
-			for (int j = 0; j < (longCromosoma-1); j++) {
-				
-				//getDistanciaBetween es un metodo estatico de Ciudades que devuelve la distancia dadas
-				// dos ciudades como parametros, estas se obtienen de la poblacion inicial.
-				
-				 localDistancia = localDistancia + Ciudades.getDistanciaBetween(
-								poblacion.get(i).getCiudadesCromosoma().get(j), 
-								poblacion.get(i).getCiudadesCromosoma().get(j+1));
-			}
-			poblacion.get(i).setDistTotal(localDistancia);
-		}
-		
+		setearDistancias ();		
 		evaluarFitness();
+		System.out.println("\nGeneracion: " + generacion + "\n" );
 		mostrar(poblacion);
 		generarPool();
 		determinarPadres();
 		crossoverCiclico();
 		hacerMutacion();
-		generarNuevaPoblacion();
-		mostrar(poblacion);
+		generarNuevaPoblacion();		
 	}
-	//}
+	}
+	
+	
+	static void setearDistancias() {
+		for (int i= 0;  i < longPoblacion; i++) {
+		int localDistancia = 0;
+		//mostrar(poblacion);
+		for (int j = 0; j < (longCromosoma-1); j++) {
+			
+			//getDistanciaBetween es un metodo estatico de Ciudades que devuelve la distancia dadas
+			// dos ciudades como parametros, estas se obtienen de la poblacion.
+			
+			 localDistancia = localDistancia + Ciudades.getDistanciaBetween(
+							poblacion.get(i).getCiudadesCromosoma().get(j), 
+							poblacion.get(i).getCiudadesCromosoma().get(j+1));
+		}
+		poblacion.get(i).setDistTotal(localDistancia);
+	}
+	}
 	
 	static void evaluarFitness() {
 		int summ = 0;
@@ -68,8 +74,9 @@ public class Principal {
 			cr.setFitness( ((double)summ - cr.getDistTotal())  /  ((double)summ * (longPoblacion-1)));
 			sumfit += cr.getFitness();
 		}
-		System.out.println("Suma total de distancias: " + summ);
-		System.out.println("Sumatoria fitness: " + sumfit);
+		System.out.println("\nSuma total de distancias: " + summ);
+		System.out.println("Sumatoria fitness: " + sumfit + "\n");
+		System.out.println("------------------------------------------------------------------------------------------------------------------------");	
 	}
 	
 	//LLENAR CROMOSOMA ES UN METODO PROPIO DE CADA CROMOSOMA QUE LLENA ALEATORIAMENTE LAS 24 CIUDADES
@@ -106,12 +113,10 @@ public class Principal {
 			int hacerCrossover = (int)(Math.random()*101); //¿HACER O NO EL CROSSOVER?//
 			int index1=parejas;
 			int index2=(parejas+1);
-			//System.out.println("Index 1: " + index1);
-			//System.out.println("Index 2: " + index2);
 			padre1 = poblacion.get(padres[index1]);
 			padre2 = poblacion.get(padres[index2]);
-			//System.out.println("Padre " + index1 + ": " + padre1.toString()  );
-			//System.out.println("Padre " + index2 + ": " + padre2.toString()  );
+			//System.out.println("Cromosoma " + padres[index1] + "- Padre " + index1 + ": " + padre1.toString()  );
+			//System.out.println("Cromosoma " + padres[index2] + "- Padre " + index2 + ": " + padre2.toString()  );
 			if (hacerCrossover<=(int)(probCrossover*100)) {
 				//System.out.println("C");
 				int pos1=0; 
@@ -187,8 +192,8 @@ public class Principal {
 		}
 	}
 	
-	public static void mostrar(ArrayList<Cromosoma> pob) {
-				for (Cromosoma cr : pob) {
+	public static void mostrar(ArrayList<Cromosoma> pob) {	
+		for (Cromosoma cr : pob) {
 					int index = pob.indexOf(cr);
 					System.out.println("Cromosoma " + index + ": " + cr.toString() +
 									   "- Distancia: "+ cr.getDistTotal()+ 
