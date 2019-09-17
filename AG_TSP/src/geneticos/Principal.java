@@ -1,6 +1,7 @@
 package geneticos;
 
 import java.util.ArrayList;
+
 //import ag.Ciudades;
 
 public class Principal {
@@ -9,7 +10,7 @@ public class Principal {
 	static int longCromosoma = 24;//24
 	static double probCrossover=0.75;
 	static double probMutacion=0.05;
-	static int cantGeneraciones = 30;
+	static int cantGeneraciones = 10;
 	static int[] pool = new int[100];
 	static int[] distancias = new int[longCromosoma];
 	static ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
@@ -20,28 +21,34 @@ public class Principal {
 	static Cromosoma hijo1=new Cromosoma();
 	static Cromosoma hijo2=new Cromosoma();
 	static int generacion=0;
+	static String[] recorrido = new String[longCromosoma];
+	public ArrayList<String> ciudades;
 	
 	
 	public static void main(String[] args) {
 		
 		crearPoblacionInicial();
 		Ciudades.crearMatriz();
-		System.out.println("\nPoblacion Inicial - Generacion: " + generacion + "\n");
+		System.out.println("\nPoblacion Inicial - Generacion: " + (generacion) + "\n");
 		mostrar(poblacion);
 		
 		while((generacion<cantGeneraciones)){
 			generacion++;
-			
+	
 		setearDistancias ();		
 		evaluarFitness();
-		System.out.println("\nGeneracion: " + generacion + "\n" );
+		System.out.println("\nGeneracion: " + (generacion) + "\n" );
 		mostrar(poblacion);
 		generarPool();
 		determinarPadres();
 		crossoverCiclico();
 		hacerMutacion();
-		generarNuevaPoblacion();		
+		generarNuevaPoblacion();	
+		
+		
 	}
+		
+		mostrarCiudades(poblacion);
 	}
 	
 	
@@ -64,16 +71,25 @@ public class Principal {
 	
 	static void evaluarFitness() {
 		int summ = 0;
-		double sumfit = 0;
+		double sumobj = 0;
+		double sumfit=0;
 		for (Cromosoma cr : poblacion) {
 			summ+=cr.getDistTotal();
 		}
+		//System.out.println((double)summ);
 		// LA FUNCION OBJETIVO ES LA DIFERENCIA ENTRE EL TOTAL DE KM Y LA QUE RECORRIO CADA CROMOSOMA,
 		// ESO DIVIDIDO POR LA SUMATORIA MULTIPLICADO POR LA CANT DE CROMOSOMAS MENOS UNO
 		for(Cromosoma cr : poblacion) {
-			cr.setFitness( ((double)summ - cr.getDistTotal())  /  ((double)summ * (longPoblacion-1)));
-			sumfit += cr.getFitness();
+			cr.setFuncion( ((double)summ - cr.getDistTotal()));    //  ((double)summ  (longPoblacion-1)))
+			//System.out.println(cr.getFuncion());
+			sumobj += cr.getFuncion();
 		}
+		for(Cromosoma cr : poblacion) {
+			cr.setFitness(cr.getFuncion() / (double)sumobj);    //  ((double)summ  (longPoblacion-1)))
+			sumfit += cr.getFitness();
+			//System.out.println(cr.getFitness());
+		}
+		
 		System.out.println("\nSuma total de distancias: " + summ);
 		System.out.println("Sumatoria fitness: " + sumfit + "\n");
 		System.out.println("------------------------------------------------------------------------------------------------------------------------");	
@@ -200,4 +216,20 @@ public class Principal {
 									   "- Fitness: " + cr.getFitness());
 				}
 	}
+	
+	public static void mostrarCiudades(ArrayList<Cromosoma> pob) {
+		System.out.println("------------------------------------------------------------------------------------------------------------------------");	
+		System.out.println("\n\nGeneracion final: " + generacion + "\n");
+		for (Cromosoma cr : pob) {	
+			for (int j = 0; j < (longCromosoma-1); j++) {
+				 recorrido [j] = Ciudades.getCiudad(cr.getCiudadesCromosoma().get(j));
+			}
+			int index = pob.indexOf(cr);
+			System.out.println("\nRecorrido cromosoma " + index);
+			for (int l = 0; l < (longCromosoma-1); l++) {
+				System.out.println(l + " - " + recorrido[l]);
+			}
+		}
+	}
+	
 }
