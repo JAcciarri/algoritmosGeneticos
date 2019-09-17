@@ -1,7 +1,9 @@
+package tspFinal;
+
+
 
 public class Ciudades {
 	
-	private static int c;
 	private static Celda[][] matriz;
 	private static String[] ciudades = {
 			("Cdad de Buenos Aires"),
@@ -58,89 +60,6 @@ public class Ciudades {
 
 			};
 	
-	public static void main(String args[]) {
-
-
-		
-		/*//Distancias diagonales (=0)
-		for (int k=0; k<24; k++) {
-			matriz[k][k].setDistanciaEntreAmbas(0);
-		}
-		
-	
-		//Todas las distancias Ushuaia
-		matriz[22][23].setDistanciaEntreAmbas(1605); matriz[23][22].setDistanciaEntreAmbas(1605);
-		
-		//Todas las distancias Stgo del Estero
-		matriz[21][22].setDistanciaEntreAmbas(3016); matriz[22][21].setDistanciaEntreAmbas(3016);
-		matriz[21][23].setDistanciaEntreAmbas(1446); matriz[23][21].setDistanciaEntreAmbas(1446);
-		
-		//Todas las distancias Santa Rosa
-		matriz[20][21].setDistanciaEntreAmbas(977); matriz[21][20].setDistanciaEntreAmbas(977);
-		matriz[20][22].setDistanciaEntreAmbas(2044); matriz[22][20].setDistanciaEntreAmbas(2044);
-		matriz[20][23].setDistanciaEntreAmbas(477); matriz[23][20].setDistanciaEntreAmbas(477);
-		
-		//Todas las distancias Santa Fe
-		matriz[19][20].setDistanciaEntreAmbas(641); matriz[20][19].setDistanciaEntreAmbas(641);
-		matriz[19][21].setDistanciaEntreAmbas(547); matriz[21][19].setDistanciaEntreAmbas(547);
-		matriz[19][22].setDistanciaEntreAmbas(2641); matriz[22][19].setDistanciaEntreAmbas(2641);
-		matriz[19][23].setDistanciaEntreAmbas(1035); matriz[23][19].setDistanciaEntreAmbas(1035);
-		
-		
-		
-		// .... y asi aumentando cada vez 1 fila hasta llegar a buenos aires, la ultima de todas
-		
-		//Todas las distancias Cordoba
-		matriz[1][2].setDistanciaEntreAmbas(677); matriz[1][0].setDistanciaEntreAmbas(646);
-		matriz[1][3].setDistanciaEntreAmbas(824); matriz[2][0].setDistanciaEntreAmbas(792);
-		matriz[1][4].setDistanciaEntreAmbas(698); matriz[4][0].setDistanciaEntreAmbas(53);
-		matriz[1][5].setDistanciaEntreAmbas(340); matriz[5][0].setDistanciaEntreAmbas(986);
-		matriz[1][6].setDistanciaEntreAmbas(466); matriz[6][0].setDistanciaEntreAmbas(985);
-		matriz[1][7].setDistanciaEntreAmbas(9); matriz[7][0].setDistanciaEntreAmbas(989);
-		matriz[1][8].setDistanciaEntreAmbas(375); matriz[8][0].setDistanciaEntreAmbas(375);
-		matriz[1][9].setDistanciaEntreAmbas(834); matriz[9][0].setDistanciaEntreAmbas(834);
-		matriz[1][10].setDistanciaEntreAmbas(1127); matriz[10][0].setDistanciaEntreAmbas(1127);
-		matriz[1][11].setDistanciaEntreAmbas(794); matriz[11][0].setDistanciaEntreAmbas(794);
-		matriz[1][12].setDistanciaEntreAmbas(2082); matriz[12][0].setDistanciaEntreAmbas(2082);
-		matriz[1][13].setDistanciaEntreAmbas(979); matriz[13][0].setDistanciaEntreAmbas(979);
-		matriz[1][14].setDistanciaEntreAmbas(1080); matriz[14][0].setDistanciaEntreAmbas(1080);
-		matriz[1][15].setDistanciaEntreAmbas(1334); matriz[15][0].setDistanciaEntreAmbas(1334);
-		matriz[1][16].setDistanciaEntreAmbas(1282); matriz[16][0].setDistanciaEntreAmbas(1282);
-		matriz[1][17].setDistanciaEntreAmbas(1005); matriz[17][0].setDistanciaEntreAmbas(1005);
-		matriz[1][18].setDistanciaEntreAmbas(749); matriz[18][0].setDistanciaEntreAmbas(749);
-		matriz[1][19].setDistanciaEntreAmbas(393); matriz[19][0].setDistanciaEntreAmbas(393);
-		matriz[1][20].setDistanciaEntreAmbas(579); matriz[20][0].setDistanciaEntreAmbas(579);
-		matriz[1][21].setDistanciaEntreAmbas(939); matriz[21][0].setDistanciaEntreAmbas(939);
-		matriz[1][22].setDistanciaEntreAmbas(2373); matriz[22][0].setDistanciaEntreAmbas(2373);
-		matriz[1][23].setDistanciaEntreAmbas(2373); matriz[22][0].setDistanciaEntreAmbas(2373);
-		
-	
-		
-		//Todas las distancias Ciudad de Buenos aires
-		matriz[0][1].setDistanciaEntreAmbas(646); matriz[1][0].setDistanciaEntreAmbas(646);
-		matriz[0][2].setDistanciaEntreAmbas(792); matriz[2][0].setDistanciaEntreAmbas(792);
-		matriz[0][3].setDistanciaEntreAmbas(933); matriz[3][0].setDistanciaEntreAmbas(933);
-		matriz[0][4].setDistanciaEntreAmbas(53); matriz[4][0].setDistanciaEntreAmbas(53);
-		matriz[0][5].setDistanciaEntreAmbas(986); matriz[5][0].setDistanciaEntreAmbas(986);
-		matriz[0][6].setDistanciaEntreAmbas(985); matriz[6][0].setDistanciaEntreAmbas(985);
-		matriz[0][7].setDistanciaEntreAmbas(989); matriz[7][0].setDistanciaEntreAmbas(989);
-		matriz[0][8].setDistanciaEntreAmbas(375); matriz[8][0].setDistanciaEntreAmbas(375);
-		matriz[0][9].setDistanciaEntreAmbas(834); matriz[9][0].setDistanciaEntreAmbas(834);
-		matriz[0][10].setDistanciaEntreAmbas(1127); matriz[10][0].setDistanciaEntreAmbas(1127);
-		matriz[0][11].setDistanciaEntreAmbas(794); matriz[11][0].setDistanciaEntreAmbas(794);
-		matriz[0][12].setDistanciaEntreAmbas(2082); matriz[12][0].setDistanciaEntreAmbas(2082);
-		matriz[0][13].setDistanciaEntreAmbas(979); matriz[13][0].setDistanciaEntreAmbas(979);
-		matriz[0][14].setDistanciaEntreAmbas(1080); matriz[14][0].setDistanciaEntreAmbas(1080);
-		matriz[0][15].setDistanciaEntreAmbas(1334); matriz[15][0].setDistanciaEntreAmbas(1334);
-		matriz[0][16].setDistanciaEntreAmbas(1282); matriz[16][0].setDistanciaEntreAmbas(1282);
-		matriz[0][17].setDistanciaEntreAmbas(1005); matriz[17][0].setDistanciaEntreAmbas(1005);
-		matriz[0][18].setDistanciaEntreAmbas(749); matriz[18][0].setDistanciaEntreAmbas(749);
-		matriz[0][19].setDistanciaEntreAmbas(393); matriz[19][0].setDistanciaEntreAmbas(393);
-		matriz[0][20].setDistanciaEntreAmbas(579); matriz[20][0].setDistanciaEntreAmbas(579);
-		matriz[0][21].setDistanciaEntreAmbas(939); matriz[21][0].setDistanciaEntreAmbas(939);
-		matriz[0][22].setDistanciaEntreAmbas(2373); matriz[22][0].setDistanciaEntreAmbas(2373);
-		matriz[0][23].setDistanciaEntreAmbas(799); matriz[23][0].setDistanciaEntreAmbas(799);*/
-	}
 
 	public static void crearMatriz() {
 	 matriz = new Celda[24][24];
@@ -161,7 +80,6 @@ public class Ciudades {
 				matriz[j][i].setDistanciaEntreAmbas(dist);
 				l++;
 				
-				//c++;
 			}
 			k++;
 		}
@@ -171,8 +89,108 @@ public class Ciudades {
 		return matriz;
 	}
 	
+	public static Celda encontrarProximaCiudad(String ciudadDesde) {
+		int indexI = 50, indexJ = 50;
+		int minimaActual = 10000;
+		for (int i = 0; i < ciudades.length; i++) {
+			if (matriz[i][0].getCiudadDesde().equalsIgnoreCase(ciudadDesde)) {
+				 // encontrar la minima distancia
+				
+				 for (int j = 0; j < ciudades.length; j++) {
+					   int dist = matriz[i][j].getDistanciaEntreAmbas();
+					   Boolean yaFueVisitada = matriz[i][j].getFueVisitada();
+					   		if (dist!=0 && dist < minimaActual && yaFueVisitada==false) {
+					   			minimaActual = dist;
+					   			indexI = i;
+					   			indexJ = j;
+					   		}
+				 }
+			  // sale del for para no seguir buscando 
+			}
+		}
+		setearVisitada(matriz[indexI][indexJ].getCiudadDesde());
+		return matriz[indexI][indexJ];
+	}
 	
+	public static Celda encontrarCiudadInicial(String cInicial) {
+		//Celda celdaInicial = null;
+		int index=50;
+		for (int i = 0; i < ciudades.length; i++) {
+			if (matriz[i][0].getCiudadDesde().equalsIgnoreCase(cInicial)) 
+				index = i; 
+		}
+		setearVisitada(matriz[index][0].getCiudadDesde());
+		return matriz[index][0];
+	}
+	
+	public static void setearVisitada(String ciu) {
+		int index=50;
+		for (int k=0; k < ciudades.length; k++) {
+			if (matriz[k][0].getCiudadDesde().equalsIgnoreCase(ciu)) 
+				index = k;
+			}
+		
+		for (int n = 0; n < ciudades.length; n++) {
+			matriz[n][index].setFueVisitada(true);
+		}
+	}
+	
+	public static int volverAlInicio(String cInicial, String cFinal) {
+		int distancia=0;
+		 for (int i = 0; i < ciudades.length; i++) {
+			 if ( matriz[i][0].getCiudadDesde().equalsIgnoreCase(cInicial)) {
+				 	for (int j = 0; j < ciudades.length; j++) {
+						if (matriz[i][j].getCiudadHasta().equalsIgnoreCase(cFinal)) {
+							 distancia = matriz[i][j].getDistanciaEntreAmbas();
+						}
+				 	}
+			 }
+		 }
+		 return distancia;
+		 }
+
+	public static Celda getMejorRecorrido() {
+		
+		
+		int mejorDistancia=150000;
+		String mejorCiudad="";
+		String ultimaCiudad="";
+		for (int i = 0; i < ciudades.length; i++) {
+			crearMatriz();
+			int distanciaTotal = 0;
+			encontrarCiudadInicial(ciudades[i]);
+			String nextCiudad = ciudades[i];
+				for (int j = 0; j < ciudades.length-1; j++) {
+					encontrarProximaCiudad(nextCiudad);					
+					Celda cell = Ciudades.encontrarProximaCiudad(nextCiudad);
+					nextCiudad = (cell.getCiudadHasta());
+					distanciaTotal += cell.getDistanciaEntreAmbas();
+					ultimaCiudad = cell.getCiudadHasta();
+					}
+				distanciaTotal = distanciaTotal + Ciudades.volverAlInicio(ciudades[i], ultimaCiudad);
+					if (distanciaTotal<mejorDistancia) {
+						mejorDistancia = distanciaTotal;
+						mejorCiudad = ciudades[i];
+					}
+				}
+		Celda cell = new Celda(mejorCiudad, " ");
+		cell.setDistanciaEntreAmbas(mejorDistancia);
+		return cell;
+		}
 	public static String[] getCiudades() {
 		return ciudades;
 	}
+	
+	////////// ALGORITMOS GENETICOS //////////////
+	
+	public static int getDistanciaBetween(int ciudadA, int ciudadB) {
+		int distancia = matriz[ciudadA][ciudadB].getDistanciaEntreAmbas();
+		return distancia;
+	}
+	
+	public static String getCiudad( int i)
+	{
+		return(ciudades[i]);
+	}
+	
 }
