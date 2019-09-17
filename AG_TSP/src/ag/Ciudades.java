@@ -1,4 +1,7 @@
 package ag;
+
+
+
 public class Ciudades {
 	
 	private static Celda[][] matriz;
@@ -157,4 +160,10 @@ public class Ciudades {
 		int distancia = matriz[ciudadA][ciudadB].getDistanciaEntreAmbas();
 		return distancia;
 	}
+	
+	public static String getCiudad( int i)
+	{
+		return(ciudades[i]);
+	}
+	
 }
