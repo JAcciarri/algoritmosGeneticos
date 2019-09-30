@@ -25,13 +25,15 @@ public class Principal {
 			distanciaTotal += cell.getDistanciaEntreAmbas();
 		}
 		
-		distanciaTotal = distanciaTotal + Ciudades.volverAlInicio(ciudadElegida, recorrido[ciudades.length-1]);
 
+		distanciaTotal = distanciaTotal + Ciudades.volverAlInicio(ciudadElegida, recorrido[ciudades.length-1]);
+		
 		System.out.println("Ciudad de inicio: " + ciudadElegida +"\nRecorrido: ");
 		for (int i = 0; i < ciudades.length; i++) {
 			System.out.println(" " +i+ "-" + recorrido[i]);
 		}
-		System.out.println("\nDistancia total: " +distanciaTotal);		   
+		System.out.println("Distancia total: " +distanciaTotal);		   
+		
 		
 	}
 	

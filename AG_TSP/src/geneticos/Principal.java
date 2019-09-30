@@ -30,36 +30,38 @@ public class Principal {
 		
 		crearPoblacionInicial();
 		Ciudades.crearMatriz();
+		setearDistancias ();	
+		evaluarFitness();
 		System.out.println("\nPoblacion Inicial - Generacion: " + (generacion) + "\n");
 		mostrar(poblacion);
 		
-		
 		while((generacion<cantGeneraciones)){
 			generacion++;
-	
-		setearDistancias ();	
-		evaluarFitness();
-		
-		defineBest();
-		
-		System.out.println("\nGeneracion: " + (generacion) + "\n" );
-		mostrar(poblacion);
-		generarPool();
-		determinarPadres();
-		crossoverCiclico();
-		hacerMutacion();
-		generarNuevaPoblacion();	
-		
-		
-		
+			setearDistancias ();	
+			evaluarFitness();
+			defineBest();
+			System.out.println("\nGeneracion: " + (generacion) + "\n" );
+			mostrar(poblacion);
+			generarPool();
+			determinarPadres();
+			crossoverCiclico();
+			hacerMutacion();
+			generarNuevaPoblacion();	
 	}
-		System.out.println("\n\nMejor distancia de todas: " + bestDistancia);
+		
+		System.out.println("\n\nMinima distancia recorrida: " + bestDistancia + " km");
 		System.out.println("A partir del cromosoma: " + bestCromosoma.toString());
 		int indice = bestCromosoma.getCiudadesCromosoma().get(0);
 		System.out.println("Ciudad de inicio: " + ciudades[indice]);
+				System.out.println("\n\t Recorrido:");
+				for(Integer ind : bestCromosoma.getCiudadesCromosoma()) {
+					System.out.println("\t-" + ciudades[ind]);
+				}
+		System.out.println("\t-"+ ciudades[indice] + " (vuelta al inicio)");
 		
 	//	mostrarCiudades(poblacion);
 	}
+	
 	
 	static void defineBest() {
 		for (int i = 0; i<poblacion.size(); i++) {
@@ -71,6 +73,9 @@ public class Principal {
 	}
 	
 	static void setearDistancias() {
+		// EN ESTE METODO SUMAMOS LA DISTANCIA DE VOLVER AL INICIO.
+		// AUN CUANDO ESTE NO ES MOSTRADO AL FINAL DEL CROMOSOMA, LA DISTANCIA ES SUMADA
+		
 		for (int i= 0;  i < longPoblacion; i++) {
 		int localDistancia = 0;
 		//mostrar(poblacion);
@@ -83,6 +88,13 @@ public class Principal {
 							poblacion.get(i).getCiudadesCromosoma().get(j), 
 							poblacion.get(i).getCiudadesCromosoma().get(j+1));
 		}
+			//VOLVER AL INICIO
+			int indiceInicio = poblacion.get(i).getCiudadesCromosoma().get(0);
+			int indiceFinal = poblacion.get(i).getCiudadesCromosoma().get(longCromosoma-1);
+			localDistancia += Ciudades.volverAlInicio(
+					ciudades[indiceInicio], //PRIMER CIUDAD
+					ciudades[indiceFinal]); //ULTIMA CIUDAD
+				
 		poblacion.get(i).setDistTotal(localDistancia);
 	}
 	}
