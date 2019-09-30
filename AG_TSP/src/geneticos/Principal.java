@@ -1,16 +1,15 @@
 package geneticos;
 
 import java.util.ArrayList;
-
-//import ag.Ciudades;
+import ag.Ciudades;
 
 public class Principal {
 
-	static int longPoblacion = 10;
-	static int longCromosoma = 24;//24
+	static int longPoblacion = 50;
+	static int longCromosoma = 24;
 	static double probCrossover=0.75;
 	static double probMutacion=0.05;
-	static int cantGeneraciones = 10;
+	static int cantGeneraciones = 200;	
 	static int[] pool = new int[100];
 	static int[] distancias = new int[longCromosoma];
 	static ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
@@ -22,8 +21,10 @@ public class Principal {
 	static Cromosoma hijo2=new Cromosoma();
 	static int generacion=0;
 	static String[] recorrido = new String[longCromosoma];
-	public ArrayList<String> ciudades;
+	public static String[] ciudades = Ciudades.getCiudades();
 	
+	static int bestDistancia = 100000;
+	static Cromosoma bestCromosoma;
 	
 	public static void main(String[] args) {
 		
@@ -32,11 +33,15 @@ public class Principal {
 		System.out.println("\nPoblacion Inicial - Generacion: " + (generacion) + "\n");
 		mostrar(poblacion);
 		
+		
 		while((generacion<cantGeneraciones)){
 			generacion++;
 	
-		setearDistancias ();		
+		setearDistancias ();	
 		evaluarFitness();
+		
+		defineBest();
+		
 		System.out.println("\nGeneracion: " + (generacion) + "\n" );
 		mostrar(poblacion);
 		generarPool();
@@ -46,11 +51,24 @@ public class Principal {
 		generarNuevaPoblacion();	
 		
 		
-	}
 		
-		mostrarCiudades(poblacion);
+	}
+		System.out.println("\n\nMejor distancia de todas: " + bestDistancia);
+		System.out.println("A partir del cromosoma: " + bestCromosoma.toString());
+		int indice = bestCromosoma.getCiudadesCromosoma().get(0);
+		System.out.println("Ciudad de inicio: " + ciudades[indice]);
+		
+	//	mostrarCiudades(poblacion);
 	}
 	
+	static void defineBest() {
+		for (int i = 0; i<poblacion.size(); i++) {
+			if (poblacion.get(i).getDistTotal() < bestDistancia) {
+				bestDistancia = poblacion.get(i).getDistTotal();
+				bestCromosoma = poblacion.get(i);
+			}
+		}
+	}
 	
 	static void setearDistancias() {
 		for (int i= 0;  i < longPoblacion; i++) {
@@ -126,7 +144,7 @@ public class Principal {
 	
 	static void crossoverCiclico() {
 		for (int parejas=0; parejas<longPoblacion; parejas+=2) {			
-			int hacerCrossover = (int)(Math.random()*101); //Â¿HACER O NO EL CROSSOVER?//
+			int hacerCrossover = (int)(Math.random()*101); //¿HACER O NO EL CROSSOVER?//
 			int index1=parejas;
 			int index2=(parejas+1);
 			padre1 = poblacion.get(padres[index1]);
