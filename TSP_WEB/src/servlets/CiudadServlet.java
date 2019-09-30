@@ -28,8 +28,10 @@ public class CiudadServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Celda mejorC = Ciudades.getMejorRecorrido();
-		request.setAttribute("mejorCiudad", mejorC);
+		String[] recorrido = Ciudades.getMejorRecorrido();
+		request.setAttribute("mejorRecorrido", recorrido);
+		request.setAttribute("mejorDistancia", Ciudades.getMejorDistancia());
+		
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 
@@ -45,7 +47,7 @@ public class CiudadServlet extends HttpServlet {
 		String cElegida = request.getParameter("destino");
 		Ciudades.crearMatriz();
 		Ciudades.encontrarCiudadInicial(cElegida);
-		recorrido[0]=cElegida;
+		recorrido[0] = cElegida;
 		String nextCiudad = cElegida;
 		
 		for (int i = 0; i<ciudades.length-1; i++) {

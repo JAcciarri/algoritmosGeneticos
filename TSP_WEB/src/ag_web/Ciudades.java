@@ -148,35 +148,52 @@ public class Ciudades {
 		 return distancia;
 		 }
 	
-	public static Celda getMejorRecorrido() {
+	public static String[] getMejorRecorrido() {
 		
-		
-		int mejorDistancia=150000;
-		String mejorCiudad="";
+		mejorDistancia=150000;
 		String ultimaCiudad="";
+		String [] localRecorrido = new String[ciudades.length];
+		String [] mejorRecorrido = new String[ciudades.length];;
+		
 		for (int i = 0; i < ciudades.length; i++) {
+			
 			crearMatriz();
 			int distanciaTotal = 0;
 			encontrarCiudadInicial(ciudades[i]);
 			String nextCiudad = ciudades[i];
-				for (int j = 0; j < ciudades.length-1; j++) {
+			localRecorrido[0] = nextCiudad;
+			
+				for (int j = 1; j < ciudades.length; j++) {
 					encontrarProximaCiudad(nextCiudad);					
 					Celda cell = Ciudades.encontrarProximaCiudad(nextCiudad);
 					nextCiudad = (cell.getCiudadHasta());
+					localRecorrido[j] = nextCiudad;
 					distanciaTotal += cell.getDistanciaEntreAmbas();
 					ultimaCiudad = cell.getCiudadHasta();
 					}
-				distanciaTotal = distanciaTotal + Ciudades.volverAlInicio(ciudades[i], ultimaCiudad);
-					if (distanciaTotal<mejorDistancia) {
+			distanciaTotal = distanciaTotal + Ciudades.volverAlInicio(ciudades[i], ultimaCiudad);
+				
+					if (distanciaTotal < mejorDistancia) {
 						mejorDistancia = distanciaTotal;
-						mejorCiudad = ciudades[i];
+						mejorRecorrido = updateRecorrido(localRecorrido);
 					}
 				}
-		Celda cell = new Celda(mejorCiudad, "nada");
-		cell.setDistanciaEntreAmbas(mejorDistancia);
-		return cell;
+		
+		return mejorRecorrido;
 		}
 	
+	
+	public static String[] updateRecorrido(String[] rec) {
+		String[] r = new String[ciudades.length];
+		
+			for(int i = 0; i<ciudades.length; i++) {
+				r[i] = rec[i];
+			}
+		return r;	
+	}
+	public static int getMejorDistancia() {
+		return mejorDistancia;
+	}
 	
 	public static String[] getCiudades() {
 		return ciudades;
