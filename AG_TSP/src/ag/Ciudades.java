@@ -5,6 +5,7 @@ package ag;
 public class Ciudades {
 	
 	private static Celda[][] matriz;
+	
 	private static String[] ciudades = {
 			("Cdad de Buenos Aires"),
 			("Cordoba"),

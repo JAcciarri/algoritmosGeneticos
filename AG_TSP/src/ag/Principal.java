@@ -16,12 +16,14 @@ public class Principal {
 		String ciudadElegida = (JOptionPane.showInputDialog(null, "Elegir la provincia"));
 		Ciudades.encontrarCiudadInicial(ciudadElegida);
 		recorrido[0]=ciudadElegida;
+		
 		String nextCiudad = ciudadElegida;
 		
 		for (int i = 0; i<ciudades.length-1; i++) {
 			Celda cell = Ciudades.encontrarProximaCiudad(nextCiudad);
 			nextCiudad = (cell.getCiudadHasta());
-			recorrido[r] = nextCiudad;  r++;
+			recorrido[r] = nextCiudad; 
+			r++;
 			distanciaTotal += cell.getDistanciaEntreAmbas();
 		}
 		
@@ -32,6 +34,7 @@ public class Principal {
 		for (int i = 0; i < ciudades.length; i++) {
 			System.out.println(" " +i+ "-" + recorrido[i]);
 		}
+		System.out.println(" " + 24 + "-" + ciudadElegida + "(vuelta al inicio)");
 		System.out.println("Distancia total: " +distanciaTotal);		   
 		
 		

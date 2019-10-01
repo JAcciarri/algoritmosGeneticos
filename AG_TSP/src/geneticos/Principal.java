@@ -20,7 +20,7 @@ public class Principal {
 	static Cromosoma hijo1=new Cromosoma();
 	static Cromosoma hijo2=new Cromosoma();
 	static int generacion=0;
-	static String[] recorrido = new String[longCromosoma];
+	static String[] recorridos = new String[longCromosoma];
 	public static String[] ciudades = Ciudades.getCiudades();
 	
 	static int bestDistancia = 100000;
@@ -35,19 +35,21 @@ public class Principal {
 		System.out.println("\nPoblacion Inicial - Generacion: " + (generacion) + "\n");
 		mostrar(poblacion);
 		
-		while((generacion<cantGeneraciones)){
+		while((generacion < cantGeneraciones)){
 			generacion++;
 			setearDistancias ();	
 			evaluarFitness();
 			defineBest();
 			System.out.println("\nGeneracion: " + (generacion) + "\n" );
 			mostrar(poblacion);
+			
 			generarPool();
 			determinarPadres();
 			crossoverCiclico();
 			hacerMutacion();
 			generarNuevaPoblacion();	
 	}
+		
 		
 		System.out.println("\n\nMinima distancia recorrida: " + bestDistancia + " km");
 		System.out.println("A partir del cromosoma: " + bestCromosoma.toString());
@@ -79,15 +81,16 @@ public class Principal {
 		for (int i= 0;  i < longPoblacion; i++) {
 		int localDistancia = 0;
 		//mostrar(poblacion);
-		for (int j = 0; j < (longCromosoma-1); j++) {
-			
-			//getDistanciaBetween es un metodo estatico de Ciudades que devuelve la distancia dadas
-			// dos ciudades como parametros, estas se obtienen de la poblacion.
-			
-			 localDistancia = localDistancia + Ciudades.getDistanciaBetween(
-							poblacion.get(i).getCiudadesCromosoma().get(j), 
-							poblacion.get(i).getCiudadesCromosoma().get(j+1));
-		}
+		
+				for (int j = 0; j < (longCromosoma-1); j++) {
+					
+					//getDistanciaBetween es un metodo estatico de Ciudades que devuelve la distancia dadas
+					// dos ciudades como parametros, estas se obtienen de la poblacion.
+					
+					 localDistancia = localDistancia + Ciudades.getDistanciaBetween(
+									poblacion.get(i).getCiudadesCromosoma().get(j), 
+									poblacion.get(i).getCiudadesCromosoma().get(j+1));
+				}
 			//VOLVER AL INICIO
 			int indiceInicio = poblacion.get(i).getCiudadesCromosoma().get(0);
 			int indiceFinal = poblacion.get(i).getCiudadesCromosoma().get(longCromosoma-1);
@@ -137,7 +140,8 @@ public class Principal {
 		int actualPos=0;
 		for (int i=0; i<longPoblacion; i++) {
 			
-				for (int posibilidades=0; posibilidades<(int)(Math.round(poblacion.get(i).getFitness()*100)); posibilidades++) {
+				for (int posibilidades=0; posibilidades < (int)(Math.round(poblacion.get(i).getFitness()*100)); 
+						posibilidades++) {
 					if (actualPos==100) break; 
 					else {
 						pool[actualPos]=i;
@@ -169,13 +173,14 @@ public class Principal {
 				int pos2=0; 
 				poblacionAuxiliar.add(index1, new Cromosoma()); //agrego hijo 1
 				poblacionAuxiliar.add(index2, new Cromosoma()); 	// agrego hijo 2
-				hijo1=poblacionAuxiliar.get(index1);
-				hijo2=poblacionAuxiliar.get(index2);
+				hijo1 = poblacionAuxiliar.get(index1);
+				hijo2 = poblacionAuxiliar.get(index2);
 				hijo1.llenarHijos(); //tengo que llenarlos para poder referenciar a las posiciones 
 				hijo2.llenarHijos();
 				hijo1.agregarCiudad(pos1, padre1);
 				hijo2.agregarCiudad(pos2, padre2);
 				//HIJO 1	
+				
 				pos1=padre1.buscarGen(pos1, padre2);				
 				for (int i=1; i<longCromosoma; i++) {							//VER DE PONER UN BREAK PARA QUE NO SIGA DANDO VUELTAS EN EL FOR					
 					if(hijo1.noExiste(pos1, padre1)) {
@@ -217,12 +222,16 @@ public class Principal {
 	
 	
 	public static void hacerMutacion(){
-		
+		int posRandom2;
+		int posRandom1;
 		for (int i=0; i<longPoblacion; i++) {
 			int hacerMutacion = (int)(Math.random()*101);			
 			if (hacerMutacion<=(int)(probMutacion*100)) {
-				int posRandom1=(int)(Math.random()*(longCromosoma-1));
-				int posRandom2=(int)(Math.random()*(longCromosoma-1));
+				 posRandom1=(int)(Math.random()*(longCromosoma-1));
+				do {
+				 posRandom2=(int)(Math.random()*(longCromosoma-1));
+				}while (posRandom2==posRandom1);
+				
 				poblacionAuxiliar.get(i).mutar(posRandom1, posRandom2);
 				//System.out.println("Hijo " + i + " mutado en: " + posRandom1 + " y " + posRandom2 + ": " + poblacionAuxiliar.get(i).toString() );
 			}	
@@ -230,7 +239,7 @@ public class Principal {
 	}
 	//traspasar poblacion
 	public static void generarNuevaPoblacion(){
-		Cromosoma var=new Cromosoma();
+		Cromosoma var = new Cromosoma();
 		for (int i=0; i<longPoblacion; i++) {		
 				var = poblacionAuxiliar.get(i);
 				poblacion.set(i, var);
@@ -252,12 +261,12 @@ public class Principal {
 		System.out.println("\n\nGeneracion final: " + generacion + "\n");
 		for (Cromosoma cr : pob) {	
 			for (int j = 0; j < (longCromosoma-1); j++) {
-				 recorrido [j] = Ciudades.getCiudad(cr.getCiudadesCromosoma().get(j));
+				 recorridos [j] = Ciudades.getCiudad(cr.getCiudadesCromosoma().get(j));
 			}
 			int index = pob.indexOf(cr);
 			System.out.println("\nRecorrido cromosoma " + index);
 			for (int l = 0; l < (longCromosoma-1); l++) {
-				System.out.println(l + " - " + recorrido[l]);
+				System.out.println(l + " - " + recorridos[l]);
 			}
 		}
 	}
