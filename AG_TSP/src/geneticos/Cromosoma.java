@@ -4,10 +4,11 @@ package geneticos;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Cromosoma {
+public class Cromosoma implements Comparable<Cromosoma> {
 	
 	private ArrayList<Integer> ciudadesCromosoma;
 	int distTotal;
+	int indice;
 	double fitness;
 	double funcion; //funcion objetivo
 
@@ -16,6 +17,29 @@ public class Cromosoma {
 		this.ciudadesCromosoma = new ArrayList<Integer>(24);//24
 	}
 	
+
+	@Override
+    public int compareTo(Cromosoma cr) {
+        if (distTotal < cr.distTotal) {
+            return -1;
+        }
+        if (distTotal > cr.distTotal) {
+            return 1;
+        }
+        return 0;
+	}
+	
+	
+	public int getIndice() {
+		return indice;
+	}
+
+
+	public void setIndice(int indice) {
+		this.indice = indice;
+	}
+
+
 	public ArrayList<Integer> getCiudadesCromosoma() {
 		return ciudadesCromosoma;
 	}

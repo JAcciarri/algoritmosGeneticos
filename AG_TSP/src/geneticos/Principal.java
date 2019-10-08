@@ -1,17 +1,19 @@
 package geneticos;
 
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import ag.Ciudades;
 
 public class Principal {
 
-	static int longPoblacion = 50;
+	static int longPoblacion = 20;
 	static int longCromosoma = 24;
 	static double probCrossover=0.75;
-	static double probMutacion=0.05;
-	static int cantGeneraciones = 200;	
+	static double probMutacion=0.1;
+	static int cantGeneraciones = 5;	
 	static int[] pool = new int[100];
-	static int[] distancias = new int[longCromosoma];
 	static ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
 	static ArrayList<Cromosoma> poblacionAuxiliar = new ArrayList<Cromosoma>();
 	static int padres[] = new int[longPoblacion];
@@ -26,23 +28,24 @@ public class Principal {
 	static int bestDistancia = 100000;
 	static Cromosoma bestCromosoma;
 	
+	static Cromosoma[] poblacionPreElite = new Cromosoma[longPoblacion];
+	static List<Integer> distancias = new ArrayList<Integer>();
+	
 	public static void main(String[] args) {
 		
 		crearPoblacionInicial();
 		Ciudades.crearMatriz();
-		setearDistancias ();	
-		evaluarFitness();
-		System.out.println("\nPoblacion Inicial - Generacion: " + (generacion) + "\n");
-		mostrar(poblacion);
+		for (int r=0; r<longPoblacion; r++) {distancias.add(0);}
 		
 		while((generacion < cantGeneraciones)){
 			generacion++;
-			setearDistancias ();	
+			setearDistancias();	
 			evaluarFitness();
-			defineBest();
+			defineBestOne();
+			defineBestTwentyPercent();
+			
 			System.out.println("\nGeneracion: " + (generacion) + "\n" );
 			mostrar(poblacion);
-			
 			generarPool();
 			determinarPadres();
 			crossoverCiclico();
@@ -65,7 +68,7 @@ public class Principal {
 	}
 	
 	
-	static void defineBest() {
+	static void defineBestOne() {
 		for (int i = 0; i<poblacion.size(); i++) {
 			if (poblacion.get(i).getDistTotal() < bestDistancia) {
 				bestDistancia = poblacion.get(i).getDistTotal();
@@ -74,6 +77,25 @@ public class Principal {
 		}
 	}
 	
+	static void defineBestTwentyPercent() {
+		
+		for (int i = 0; i < longPoblacion ; i++) {
+			poblacionPreElite[i] = poblacion.get(i);
+			poblacionPreElite[i].setIndice(i);
+		}
+		Arrays.sort(poblacionPreElite);
+		System.out.println("Generacion "+ generacion + " ordenada por distancia");
+		for (int q=0; q<longPoblacion; q++) 
+			System.out.println("Cr "+ poblacionPreElite[q].getIndice() + " - Distancia: "+poblacionPreElite[q].getDistTotal() );
+	
+		System.out.println("\n\nElites que pasan");
+		for (int k = 0; k < (20 * longPoblacion) / 100; k++) {
+			System.out.println("Cromo: "+poblacionPreElite[k].getIndice() + " - " +poblacionPreElite[k]);
+		}
+	
+	}
+	
+
 	static void setearDistancias() {
 		// EN ESTE METODO SUMAMOS LA DISTANCIA DE VOLVER AL INICIO.
 		// AUN CUANDO ESTE NO ES MOSTRADO AL FINAL DEL CROMOSOMA, LA DISTANCIA ES SUMADA
@@ -92,14 +114,14 @@ public class Principal {
 									poblacion.get(i).getCiudadesCromosoma().get(j+1));
 				}
 			//VOLVER AL INICIO
-			int indiceInicio = poblacion.get(i).getCiudadesCromosoma().get(0);
-			int indiceFinal = poblacion.get(i).getCiudadesCromosoma().get(longCromosoma-1);
-			localDistancia += Ciudades.volverAlInicio(
-					ciudades[indiceInicio], //PRIMER CIUDAD
-					ciudades[indiceFinal]); //ULTIMA CIUDAD
-				
-		poblacion.get(i).setDistTotal(localDistancia);
-	}
+				int indiceInicio = poblacion.get(i).getCiudadesCromosoma().get(0);
+				int indiceFinal = poblacion.get(i).getCiudadesCromosoma().get(longCromosoma-1);
+				localDistancia += Ciudades.volverAlInicio(
+						ciudades[indiceInicio], //PRIMER CIUDAD
+						ciudades[indiceFinal]); //ULTIMA CIUDAD
+					
+			poblacion.get(i).setDistTotal(localDistancia);
+		}
 	}
 	
 	static void evaluarFitness() {
@@ -122,9 +144,9 @@ public class Principal {
 			sumfit += cr.getFitness();
 			//System.out.println(cr.getFitness());
 		}
-		
-		System.out.println("\nSuma total de distancias: " + summ);
-		System.out.println("Sumatoria fitness: " + sumfit + "\n");
+	
+	//	System.out.println("\nSuma total de distancias: " + summ);
+	//	System.out.println("Sumatoria fitness: " + sumfit + "\n");
 		System.out.println("------------------------------------------------------------------------------------------------------------------------");	
 	}
 	
