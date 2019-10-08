@@ -18,6 +18,7 @@ public class Cromosoma implements Comparable<Cromosoma> {
 	}
 	
 
+	
 	@Override
     public int compareTo(Cromosoma cr) {
         if (distTotal < cr.distTotal) {

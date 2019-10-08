@@ -8,11 +8,11 @@ import ag.Ciudades;
 
 public class Principal {
 
-	static int longPoblacion = 20;
+	static int longPoblacion = 200;
 	static int longCromosoma = 24;
-	static double probCrossover=0.75;
-	static double probMutacion=0.1;
-	static int cantGeneraciones = 5;	
+	static double probCrossover = 0.70;
+	static double probMutacion = 0.40;
+	static int cantGeneraciones = 7500;	
 	static int[] pool = new int[100];
 	static ArrayList<Cromosoma> poblacion = new ArrayList<Cromosoma>();
 	static ArrayList<Cromosoma> poblacionAuxiliar = new ArrayList<Cromosoma>();
@@ -83,6 +83,7 @@ public class Principal {
 			poblacionPreElite[i] = poblacion.get(i);
 			poblacionPreElite[i].setIndice(i);
 		}
+		
 		Arrays.sort(poblacionPreElite);
 		System.out.println("Generacion "+ generacion + " ordenada por distancia");
 		for (int q=0; q<longPoblacion; q++) 
@@ -175,13 +176,13 @@ public class Principal {
 	
 	static void determinarPadres(){
 		
-		for (int i=0; i<longPoblacion; i++) {
+		for (int i=0; i< longPoblacion - ((20 * longPoblacion) / 100); i++) {
 			padres[i] = pool[(int)(Math.random()*100)]; //padres me guarda los indices de la pool que son los indices de poblacion
 		}
 	}
 	
 	static void crossoverCiclico() {
-		for (int parejas=0; parejas<longPoblacion; parejas+=2) {			
+		for (int parejas=0; parejas < longPoblacion - ((20 * longPoblacion) / 100); parejas+=2) {			
 			int hacerCrossover = (int)(Math.random()*101); //¿HACER O NO EL CROSSOVER?//
 			int index1=parejas;
 			int index2=(parejas+1);
@@ -246,7 +247,7 @@ public class Principal {
 	public static void hacerMutacion(){
 		int posRandom2;
 		int posRandom1;
-		for (int i=0; i<longPoblacion; i++) {
+		for (int i=0; i<longPoblacion - ((20 * longPoblacion) / 100); i++) {
 			int hacerMutacion = (int)(Math.random()*101);			
 			if (hacerMutacion<=(int)(probMutacion*100)) {
 				 posRandom1=(int)(Math.random()*(longCromosoma-1));
@@ -262,11 +263,16 @@ public class Principal {
 	//traspasar poblacion
 	public static void generarNuevaPoblacion(){
 		Cromosoma var = new Cromosoma();
-		for (int i=0; i<longPoblacion; i++) {		
+		for (int i=0; i < longPoblacion - ((20 * longPoblacion) / 100); i++) {		
 				var = poblacionAuxiliar.get(i);
 				poblacion.set(i, var);
-			
 		}
+		int j = 0;
+		for (int k = longPoblacion - ((20 * longPoblacion) / 100) ; k < longPoblacion ; k++) {
+			poblacion.set(k, poblacionPreElite[j]);
+			j++;
+		}
+		
 	}
 	
 	public static void mostrar(ArrayList<Cromosoma> pob) {	
