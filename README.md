@@ -1,7 +1,7 @@
-# Algoritmos Geneticos
-Proyecto de Algoritmos Genéticos - UTN 2019
+# Genetic Algorithms
+UTN 2019 Project
 
-Integrantes:
+Members:
 Biondo Dolores -
 Oliva Martin -
 Acciarri Joshua
